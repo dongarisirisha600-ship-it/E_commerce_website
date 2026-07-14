@@ -1,6 +1,6 @@
-# Customer Portal
+# MegaMart
 
-This project is a React and Vite frontend for a customer-focused shopping portal. It now demonstrates dynamic routing, API-driven content, loading/error states, and local storage persistence while keeping the reusable component structure from the earlier assignment.
+This project is a React and Vite frontend for the MegaMart shopping portal. It now demonstrates dynamic routing, API-driven content, loading/error states, and local storage persistence while keeping the reusable component structure from the earlier assignment.
 
 ## New Features
 - Dynamic routing with route parameters and reusable details pages

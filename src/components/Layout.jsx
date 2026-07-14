@@ -15,8 +15,8 @@ function Layout() {
       <header style={{ background: 'linear-gradient(90deg, #ff4d6d 0%, #d62828 100%)', color: '#fff', padding: '1.25rem 1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
           <div>
-            <p style={{ margin: 0, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: '700' }}>Customer Portal</p>
-            <h1 style={{ margin: '0.25rem 0 0', fontSize: '1.6rem' }}>React Router Customer App</h1>
+            <p style={{ margin: 0, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: '700' }}>MegaMart</p>
+            <h1 style={{ margin: '0.25rem 0 0', fontSize: '1.6rem' }}>React Router MegaMart App</h1>
           </div>
           <nav style={{ display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
             {links.map((link) => (

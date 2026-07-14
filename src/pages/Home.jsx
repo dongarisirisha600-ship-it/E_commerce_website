@@ -67,7 +67,7 @@ function Home() {
   return (
     <section style={{ display: 'grid', gap: '1rem' }}>
       <div style={{ background: '#fff5f8', borderRadius: '16px', padding: '1rem', border: '1px solid #ffd6e0' }}>
-        <h2 style={{ marginTop: 0, color: '#d62828' }}>Welcome to the Customer Portal</h2>
+        <h2 style={{ marginTop: 0, color: '#d62828' }}>Welcome to MegaMart</h2>
         <p style={{ lineHeight: 1.7 }}>This React app now loads live product data, supports dynamic details pages, and preserves your favorites and recent views.</p>
         <div style={{ display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
           <Link to="/about" style={{ color: '#d62828', fontWeight: '700' }}>Learn more</Link>
