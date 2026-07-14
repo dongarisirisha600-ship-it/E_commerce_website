@@ -1,6 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
+const createPlaceholderSvg = (label, bgColor = '#fff5f8', textColor = '#d62828') => {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+      <rect width="400" height="240" rx="24" fill="${bgColor}" />
+      <circle cx="320" cy="70" r="44" fill="${textColor}" opacity="0.16" />
+      <rect x="60" y="86" width="280" height="72" rx="16" fill="white" opacity="0.95" />
+      <text x="200" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="${textColor}">${label}</text>
+    </svg>`;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+};
+
 const products = [
   {
     id: 1,
@@ -8,7 +20,7 @@ const products = [
     price: 499,
     category: 'Fashion',
     description: 'Comfortable cotton t-shirt for everyday wear.',
-    image: 'https://via.placeholder.com/150',
+    image: createPlaceholderSvg('T-Shirt'),
   },
   {
     id: 2,
@@ -16,7 +28,7 @@ const products = [
     price: 1299,
     category: 'Fashion',
     description: 'Slim-fit denim jeans with a clean finish.',
-    image: 'https://via.placeholder.com/150',
+    image: createPlaceholderSvg('Jeans'),
   },
   {
     id: 3,
@@ -24,7 +36,7 @@ const products = [
     price: 1999,
     category: 'Fashion',
     description: 'Warm winter jacket with a premium feel.',
-    image: 'https://via.placeholder.com/150',
+    image: createPlaceholderSvg('Jacket'),
   },
   {
     id: 4,
@@ -32,7 +44,7 @@ const products = [
     price: 899,
     category: 'Home',
     description: 'Modern LED lamp for study and work spaces.',
-    image: 'https://via.placeholder.com/150',
+    image: createPlaceholderSvg('Desk Lamp'),
   },
 ];
 
@@ -55,9 +67,9 @@ function App() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('Welcome back! Browse products and build your cart.');
 
-  // Banner image: place a local file at /public/banner.jpg to override the fallback
-  const bannerSrc = '/banner.jpg';
-  const bannerFallback = 'https://via.placeholder.com/1200x240?text=ShopHub+Banner';
+  // Banner image uses a local inline SVG placeholder so the page works without external requests.
+  const bannerSrc = createPlaceholderSvg('ShopHub Banner', '#ff4d6d', '#ffffff');
+  const bannerFallback = bannerSrc;
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
