@@ -11,11 +11,6 @@ const initialForm = {
   confirmPassword: '',
   gender: '',
   dob: '',
-  collegeName: '',
-  branch: '',
-  graduationYear: '',
-  skills: '',
-  resumeName: '',
   acceptTerms: false,
 };
 
@@ -68,12 +63,6 @@ function App() {
     setErrors((current) => ({ ...current, [name]: undefined }));
   };
 
-  const handleResumeUpload = (event) => {
-    const fileName = event.target.files?.[0]?.name || '';
-    setFormData((current) => ({ ...current, resumeName: fileName }));
-    setErrors((current) => ({ ...current, resumeName: undefined }));
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const validation = validateRegistrationForm(formData);
@@ -87,7 +76,6 @@ function App() {
     setErrors({});
     setSubmittedDetails({
       ...formData,
-      resumeName: formData.resumeName || 'No resume selected',
     });
     setSuccessMessage(`Registration successful for ${formData.fullName}!`);
     setFormData({ ...initialForm });
@@ -246,25 +234,6 @@ function App() {
                   <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Date of Birth</label>
                   <input name="dob" type="date" value={formData.dob} onChange={handleChange} style={inputStyle} />
                 </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>College Name</label>
-                  <input name="collegeName" value={formData.collegeName} onChange={handleChange} placeholder="Enter college name" style={inputStyle} />
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Branch</label>
-                  <input name="branch" value={formData.branch} onChange={handleChange} placeholder="CSE / ECE / MECH" style={inputStyle} />
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Graduation Year</label>
-                  <select name="graduationYear" value={formData.graduationYear} onChange={handleChange} style={inputStyle}>
-                    <option value="">Select year</option>
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
-                    <option value="2028">2028</option>
-                    <option value="2029">2029</option>
-                    <option value="2030">2030</option>
-                  </select>
-                </div>
               </div>
 
               <div>
@@ -291,17 +260,6 @@ function App() {
                   <button type="button" onClick={() => setShowConfirmPassword((current) => !current)} style={toggleButtonStyle}>{showConfirmPassword ? 'Hide' : 'Show'}</button>
                 </div>
                 {errors.confirmPassword && <small style={errorStyle}>{errors.confirmPassword}</small>}
-              </div>
-
-              <div>
-                <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Skills</label>
-                <textarea name="skills" value={formData.skills} onChange={handleChange} placeholder="React, JavaScript, UI/UX" rows="3" style={{ ...inputStyle, resize: 'vertical' }} />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Resume Upload</label>
-                <input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} style={{ width: '100%', padding: '0.6rem 0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc', background: '#fff' }} />
-                {formData.resumeName && <small style={{ color: '#d62828', display: 'block', marginTop: '0.3rem' }}>Selected file: {formData.resumeName}</small>}
               </div>
 
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600' }}>
@@ -344,9 +302,6 @@ function App() {
                   <div><strong>Name:</strong> {submittedDetails.fullName}</div>
                   <div><strong>Email:</strong> {submittedDetails.email}</div>
                   <div><strong>Mobile:</strong> {submittedDetails.mobile}</div>
-                  <div><strong>College:</strong> {submittedDetails.collegeName || '—'}</div>
-                  <div><strong>Branch:</strong> {submittedDetails.branch || '—'}</div>
-                  <div><strong>Resume:</strong> {submittedDetails.resumeName}</div>
                 </div>
               </div>
             )}
