@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { validateRegistrationForm } from './registrationValidation';
+import { validateLoginForm } from './loginValidation';
 
 const initialForm = {
   fullName: '',
@@ -37,6 +38,12 @@ const passwordStrength = (password) => {
   return { label: 'Strong', strength: 100, color: '#16a34a' };
 };
 
+const initialStudents = [
+  { id: 1, fullName: 'Asha Reddy', email: 'asha@example.com', branch: 'CSE', graduationYear: '2026', skills: 'React, UI/UX' },
+  { id: 2, fullName: 'Kiran Rao', email: 'kiran@example.com', branch: 'ECE', graduationYear: '2027', skills: 'JavaScript, Node.js' },
+  { id: 3, fullName: 'Nikhil Verma', email: 'nikhil@example.com', branch: 'MECH', graduationYear: '2028', skills: 'Python, Data Science' },
+];
+
 function App() {
   const [formData, setFormData] = useState({ ...initialForm });
   const [errors, setErrors] = useState({});
@@ -44,6 +51,14 @@ function App() {
   const [submittedDetails, setSubmittedDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [loginErrors, setLoginErrors] = useState({});
+  const [loginStatus, setLoginStatus] = useState('idle');
+  const [loginMessage, setLoginMessage] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [students, setStudents] = useState(initialStudents);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('name');
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -91,18 +106,116 @@ function App() {
 
   const strength = passwordStrength(formData.password);
 
+  const filteredStudents = useMemo(() => {
+    const normalized = searchTerm.toLowerCase();
+    const base = [...students].filter((student) => {
+      const fullText = `${student.fullName} ${student.email} ${student.branch} ${student.graduationYear}`.toLowerCase();
+      return fullText.includes(normalized);
+    });
+
+    if (sortBy === 'name') {
+      return base.sort((a, b) => a.fullName.localeCompare(b.fullName));
+    }
+
+    if (sortBy === 'year') {
+      return base.sort((a, b) => Number(a.graduationYear) - Number(b.graduationYear));
+    }
+
+    return base;
+  }, [searchTerm, sortBy, students]);
+
+  useEffect(() => {
+    if (loginStatus !== 'loading') {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      if (loginData.username === 'admin@example.com' && loginData.password === 'Admin@123!') {
+        setLoginStatus('success');
+        setLoginMessage('Welcome back! You are logged in successfully.');
+      } else {
+        setLoginStatus('error');
+        setLoginMessage('Invalid credentials. Please try again.');
+      }
+    }, 1800);
+
+    return () => window.clearTimeout(timer);
+  }, [loginData.password, loginData.username, loginStatus]);
+
+  const handleLoginChange = (event) => {
+    const { name, value } = event.target;
+    setLoginData((current) => ({ ...current, [name]: value }));
+    setLoginErrors((current) => ({ ...current, [name]: undefined }));
+  };
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+    const validation = validateLoginForm(loginData);
+
+    if (!validation.isValid) {
+      setLoginErrors(validation.errors);
+      setLoginStatus('idle');
+      setLoginMessage('');
+      return;
+    }
+
+    setLoginErrors({});
+    setLoginStatus('loading');
+    setLoginMessage('');
+  };
+
+  const handleLoginReset = () => {
+    setLoginData({ username: '', password: '' });
+    setLoginErrors({});
+    setLoginStatus('idle');
+    setLoginMessage('');
+    setShowLoginPassword(false);
+  };
+
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #fff5f8 0%, #ffe4ea 100%)', fontFamily: 'Arial, sans-serif', color: '#6b1f2b', padding: '1.25rem' }}>
-      <div style={{ maxWidth: '1150px', margin: '0 auto', background: 'rgba(255,255,255,0.96)', borderRadius: '24px', boxShadow: '0 18px 45px rgba(0, 0, 0, 0.12)', overflow: 'hidden' }}>
+      <div style={{ maxWidth: '1250px', margin: '0 auto', background: 'rgba(255,255,255,0.96)', borderRadius: '24px', boxShadow: '0 18px 45px rgba(0, 0, 0, 0.12)', overflow: 'hidden' }}>
         <header style={{ background: 'linear-gradient(90deg, #ff4d6d 0%, #d62828 100%)', color: '#fff', padding: '2rem' }}>
           <p style={{ margin: '0 0 0.4rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: '700' }}>Student Registration Portal</p>
-          <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem' }}>Create your student account</h1>
-          <p style={{ margin: 0, lineHeight: 1.6, maxWidth: '680px' }}>Register with a polished, validated form that collects academic and profile details with a smooth success experience.</p>
+          <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem' }}>Student dashboard with login and dynamic listings</h1>
+          <p style={{ margin: 0, lineHeight: 1.6, maxWidth: '780px' }}>This experience now combines registration, secure login, loading feedback, empty states, and dynamic cards and tables for stored student records.</p>
         </header>
 
-        <main style={{ display: 'grid', gridTemplateColumns: '1.3fr 0.7fr', gap: '1.25rem', padding: '1.25rem' }}>
-          <section style={{ background: '#fff5f8', borderRadius: '18px', padding: '1rem', border: '1px solid #ffd6e0' }}>
-            <h2 style={{ marginTop: 0, color: '#d62828' }}>Registration Form</h2>
+        <main style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1.25rem', padding: '1.25rem' }}>
+          <section style={{ display: 'grid', gap: '1rem' }}>
+            <div style={{ background: '#fff5f8', borderRadius: '18px', padding: '1rem', border: '1px solid #ffd6e0' }}>
+              <h2 style={{ marginTop: 0, color: '#d62828' }}>Login Page</h2>
+              <form onSubmit={handleLoginSubmit} style={{ display: 'grid', gap: '0.8rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Email / Username</label>
+                  <input name="username" value={loginData.username} onChange={handleLoginChange} placeholder="admin@example.com" style={inputStyle} />
+                  {loginErrors.username && <small style={errorStyle}>{loginErrors.username}</small>}
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: '600' }}>Password</label>
+                  <div style={{ position: 'relative' }}>
+                    <input name="password" type={showLoginPassword ? 'text' : 'password'} value={loginData.password} onChange={handleLoginChange} placeholder="Enter password" style={{ ...inputStyle, paddingRight: '90px' }} />
+                    <button type="button" onClick={() => setShowLoginPassword((current) => !current)} style={toggleButtonStyle}>{showLoginPassword ? 'Hide' : 'Show'}</button>
+                  </div>
+                  {loginErrors.password && <small style={errorStyle}>{loginErrors.password}</small>}
+                </div>
+                <div style={{ display: 'flex', gap: '0.7rem', flexWrap: 'wrap' }}>
+                  <button type="submit" disabled={loginStatus === 'loading'} style={{ border: 'none', background: loginStatus === 'loading' ? '#ffb3c1' : '#d62828', color: '#fff', padding: '0.75rem 1rem', borderRadius: '10px', cursor: loginStatus === 'loading' ? 'wait' : 'pointer', fontWeight: '700' }}>
+                    {loginStatus === 'loading' ? 'Logging in...' : 'Login'}
+                  </button>
+                  <button type="button" onClick={handleLoginReset} style={{ border: '1px solid #ffb3c1', background: '#fff', color: '#d62828', padding: '0.75rem 1rem', borderRadius: '10px', cursor: 'pointer', fontWeight: '700' }}>Clear</button>
+                </div>
+                <div style={{ fontSize: '0.95rem', color: '#7a1e1e' }}>
+                  <span>Forgot Password?</span> <span style={{ color: '#d62828', fontWeight: '600' }}>UI Only</span>
+                </div>
+                {loginStatus === 'loading' && <div style={{ color: '#d62828', fontWeight: '600' }}>Loading your session...</div>}
+                {loginStatus === 'success' && loginMessage && <div style={{ color: '#15803d', fontWeight: '600' }}>{loginMessage}</div>}
+                {loginStatus === 'error' && loginMessage && <div style={{ color: '#dc2626', fontWeight: '600' }}>{loginMessage}</div>}
+              </form>
+            </div>
+
+            <div style={{ background: '#fff5f8', borderRadius: '18px', padding: '1rem', border: '1px solid #ffd6e0' }}>
+              <h2 style={{ marginTop: 0, color: '#d62828' }}>Registration Form</h2>
             <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '0.85rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
                 <div>
@@ -202,17 +315,18 @@ function App() {
                 <button type="button" onClick={handleReset} style={{ border: '1px solid #ffb3c1', background: '#fff', color: '#d62828', padding: '0.75rem 1rem', borderRadius: '10px', cursor: 'pointer', fontWeight: '700' }}>Reset</button>
               </div>
             </form>
+            </div>
           </section>
 
           <aside style={{ display: 'grid', gap: '1rem' }}>
             <div style={{ background: '#fff5f8', borderRadius: '16px', padding: '1rem', border: '1px solid #ffd6e0' }}>
               <h3 style={{ marginTop: 0, color: '#d62828' }}>What this page covers</h3>
               <ul style={{ margin: '0', paddingLeft: '1rem', lineHeight: 1.7 }}>
-                <li>Controlled state with React hooks</li>
-                <li>onChange, onSubmit, and onClick events</li>
-                <li>Client-side validation for email, password, mobile, and terms</li>
-                <li>Success state and form clearing</li>
-                <li>Bonus: show/hide password and password strength</li>
+                <li>Conditional rendering with ternary and &&</li>
+                <li>Loading state and empty state handling</li>
+                <li>List rendering with map() and keys</li>
+                <li>Dynamic cards and tables for student records</li>
+                <li>Login success/error feedback</li>
               </ul>
             </div>
 
@@ -238,6 +352,66 @@ function App() {
             )}
           </aside>
         </main>
+
+        <section style={{ padding: '0 1.25rem 1.25rem' }}>
+          <div style={{ background: '#fff5f8', borderRadius: '18px', padding: '1rem', border: '1px solid #ffd6e0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap', marginBottom: '0.8rem' }}>
+              <h2 style={{ margin: 0, color: '#d62828' }}>Registered Student Records</h2>
+              <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+                <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search students" style={{ padding: '0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc', minWidth: '220px' }} />
+                <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} style={{ padding: '0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc' }}>
+                  <option value="name">Sort by Name</option>
+                  <option value="year">Sort by Year</option>
+                </select>
+              </div>
+            </div>
+
+            {filteredStudents.length === 0 ? (
+              <div style={{ background: '#fff', borderRadius: '12px', padding: '1rem', border: '1px dashed #ffb3c1', color: '#7a1e1e' }}>
+                No records found. Try a different search term.
+              </div>
+            ) : (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem', marginBottom: '0.9rem' }}>
+                  {filteredStudents.map((student) => (
+                    <div key={student.id} style={{ background: '#fff', borderRadius: '12px', padding: '0.9rem', border: '1px solid #ffd6e0' }}>
+                      <h3 style={{ margin: '0 0 0.35rem', color: '#d62828' }}>{student.fullName}</h3>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Email:</strong> {student.email}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Branch:</strong> {student.branch}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Graduation:</strong> {student.graduationYear}</p>
+                      <p style={{ margin: 0 }}><strong>Skills:</strong> {student.skills}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '12px', overflow: 'hidden' }}>
+                    <thead>
+                      <tr style={{ background: '#ffe4ea' }}>
+                        <th style={tableCellStyle}>Name</th>
+                        <th style={tableCellStyle}>Email</th>
+                        <th style={tableCellStyle}>Branch</th>
+                        <th style={tableCellStyle}>Graduation</th>
+                        <th style={tableCellStyle}>Skills</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredStudents.map((student) => (
+                        <tr key={student.id}>
+                          <td style={tableCellStyle}>{student.fullName}</td>
+                          <td style={tableCellStyle}>{student.email}</td>
+                          <td style={tableCellStyle}>{student.branch}</td>
+                          <td style={tableCellStyle}>{student.graduationYear}</td>
+                          <td style={tableCellStyle}>{student.skills}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -269,6 +443,12 @@ const toggleButtonStyle = {
   padding: '0.3rem 0.55rem',
   borderRadius: '8px',
   cursor: 'pointer',
+};
+
+const tableCellStyle = {
+  border: '1px solid #ffd6e0',
+  padding: '0.7rem',
+  textAlign: 'left',
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(
