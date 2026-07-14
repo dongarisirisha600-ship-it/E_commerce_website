@@ -1,31 +1,54 @@
-# Student Registration Portal
+# Customer Portal
 
-This project now delivers a polished registration experience built with React and Vite. The UI collects student profile details, validates each field, and provides a success state with submitted details after a successful submission.
+This project is a React and Vite frontend that demonstrates the core concepts taught in class by building an initial customer-focused UI. It includes a navbar, sidebar, home page, registration form, login page, and a dynamic customer records dashboard.
 
-## Features
-- Controlled form fields powered by React state
-- Form validation for name, email, mobile, password, confirm password, and terms acceptance
-- Password strength meter and show/hide password toggles
-- Resume upload field with UI-only handling
-- Reset button and success confirmation state
+## Features Implemented
+- Header and navigation bar
+- Sidebar with quick links
+- Home page with reusable cards
+- Registration form with validation and feedback
+- Login page with validation, loading state, and success/error messages
+- Dynamic customer records table with search and sorting
+- Reusable components such as Navbar, Sidebar, Footer, Button, Card, FormField, PasswordField, SectionTitle, and StatBadge
 
-## Concepts Covered
-- useState for controlled components
-- onChange, onSubmit, and onClick event handling
-- Client-side validation and error messaging
-- Conditional rendering for success and submission details
+## React Concepts Used
+- Introduction to React and Vite
+- JSX syntax and its advantages
+- Functional components
+- Props and their read-only nature
+- Default and named module exports
+- State and controlled inputs
+- Conditional rendering
+- List rendering using map()
+- Component-based architecture and reusability
+
+## Class vs Functional Components
+- Class components use ES6 class syntax and lifecycle methods.
+- Functional components are simpler and use hooks such as useState.
+- Functional components are preferred in modern React development.
+
+## Props and main.jsx
+- Props allow parent components to pass read-only data into child components.
+- main.jsx is the entry point that renders the App component into the DOM.
+
+## Styling Approach
+- Inline styles for component-level styling
+- Global CSS in src/index.css for reset and page-level styling
+- CSS modules were not required for this initial version
 
 ## Screenshots
-- Registration form overview: [docs/screenshots/registration-page.svg](docs/screenshots/registration-page.svg)
+- Application overview: [docs/screenshots/customer-portal.svg](docs/screenshots/customer-portal.svg)
 
-## Run locally
-1. Install dependencies: npm install
-2. Start the development server: npm run dev
-3. Run validation tests: npm test
-4. Build the project: npm run build
+## Run Locally
+1. npm install
+2. npm run dev
+3. npm test
+4. npm run build
 
 ## Project Structure
-- src/main.jsx: main registration page component
-- src/registrationValidation.js: validation logic
-- src/registrationValidation.test.js: regression tests
+- src/App.jsx: main app layout
+- src/main.jsx: ReactDOM entry point
+- src/components/: reusable UI components
+- src/pages/: home and dashboard pages
+- src/registrationValidation.js and src/loginValidation.js: validation logic
 
