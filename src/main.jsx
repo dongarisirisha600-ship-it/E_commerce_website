@@ -38,10 +38,10 @@ const passwordStrength = (password) => {
   return { label: 'Strong', strength: 100, color: '#16a34a' };
 };
 
-const initialStudents = [
-  { id: 1, fullName: 'Asha Reddy', email: 'asha@example.com', branch: 'CSE', graduationYear: '2026', skills: 'React, UI/UX' },
-  { id: 2, fullName: 'Kiran Rao', email: 'kiran@example.com', branch: 'ECE', graduationYear: '2027', skills: 'JavaScript, Node.js' },
-  { id: 3, fullName: 'Nikhil Verma', email: 'nikhil@example.com', branch: 'MECH', graduationYear: '2028', skills: 'Python, Data Science' },
+const initialCustomers = [
+  { id: 1, fullName: 'Asha Reddy', email: 'asha@example.com', branch: 'Electronics', graduationYear: '2026', skills: 'React, UI/UX' },
+  { id: 2, fullName: 'Kiran Rao', email: 'kiran@example.com', branch: 'Retail', graduationYear: '2027', skills: 'JavaScript, Node.js' },
+  { id: 3, fullName: 'Nikhil Verma', email: 'nikhil@example.com', branch: 'Logistics', graduationYear: '2028', skills: 'Python, Data Science' },
 ];
 
 function App() {
@@ -56,7 +56,7 @@ function App() {
   const [loginStatus, setLoginStatus] = useState('idle');
   const [loginMessage, setLoginMessage] = useState('');
   const [showLoginPassword, setShowLoginPassword] = useState(false);
-  const [students, setStudents] = useState(initialStudents);
+  const [customers, setCustomers] = useState(initialCustomers);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
 
@@ -106,10 +106,10 @@ function App() {
 
   const strength = passwordStrength(formData.password);
 
-  const filteredStudents = useMemo(() => {
+  const filteredCustomers = useMemo(() => {
     const normalized = searchTerm.toLowerCase();
-    const base = [...students].filter((student) => {
-      const fullText = `${student.fullName} ${student.email} ${student.branch} ${student.graduationYear}`.toLowerCase();
+    const base = [...customers].filter((customer) => {
+      const fullText = `${customer.fullName} ${customer.email} ${customer.branch} ${customer.graduationYear}`.toLowerCase();
       return fullText.includes(normalized);
     });
 
@@ -122,7 +122,7 @@ function App() {
     }
 
     return base;
-  }, [searchTerm, sortBy, students]);
+  }, [searchTerm, sortBy, customers]);
 
   useEffect(() => {
     if (loginStatus !== 'loading') {
@@ -176,9 +176,9 @@ function App() {
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #fff5f8 0%, #ffe4ea 100%)', fontFamily: 'Arial, sans-serif', color: '#6b1f2b', padding: '1.25rem' }}>
       <div style={{ maxWidth: '1250px', margin: '0 auto', background: 'rgba(255,255,255,0.96)', borderRadius: '24px', boxShadow: '0 18px 45px rgba(0, 0, 0, 0.12)', overflow: 'hidden' }}>
         <header style={{ background: 'linear-gradient(90deg, #ff4d6d 0%, #d62828 100%)', color: '#fff', padding: '2rem' }}>
-          <p style={{ margin: '0 0 0.4rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: '700' }}>Student Registration Portal</p>
-          <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem' }}>Student dashboard with login and dynamic listings</h1>
-          <p style={{ margin: 0, lineHeight: 1.6, maxWidth: '780px' }}>This experience now combines registration, secure login, loading feedback, empty states, and dynamic cards and tables for stored student records.</p>
+          <p style={{ margin: '0 0 0.4rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: '700' }}>Customer Registration Portal</p>
+          <h1 style={{ margin: '0 0 0.5rem', fontSize: '2rem' }}>Customer dashboard with login and dynamic listings</h1>
+          <p style={{ margin: 0, lineHeight: 1.6, maxWidth: '780px' }}>This experience now combines registration, secure login, loading feedback, empty states, and dynamic cards and tables for stored customer records.</p>
         </header>
 
         <main style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1.25rem', padding: '1.25rem' }}>
@@ -325,7 +325,7 @@ function App() {
                 <li>Conditional rendering with ternary and &&</li>
                 <li>Loading state and empty state handling</li>
                 <li>List rendering with map() and keys</li>
-                <li>Dynamic cards and tables for student records</li>
+                <li>Dynamic cards and tables for customer records</li>
                 <li>Login success/error feedback</li>
               </ul>
             </div>
@@ -356,9 +356,9 @@ function App() {
         <section style={{ padding: '0 1.25rem 1.25rem' }}>
           <div style={{ background: '#fff5f8', borderRadius: '18px', padding: '1rem', border: '1px solid #ffd6e0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap', marginBottom: '0.8rem' }}>
-              <h2 style={{ margin: 0, color: '#d62828' }}>Registered Student Records</h2>
+              <h2 style={{ marginTop: 0, color: '#d62828' }}>Registered Customer Records</h2>
               <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-                <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search students" style={{ padding: '0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc', minWidth: '220px' }} />
+                <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search customers" style={{ padding: '0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc', minWidth: '220px' }} />
                 <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} style={{ padding: '0.7rem', borderRadius: '10px', border: '1px solid #ffd1dc' }}>
                   <option value="name">Sort by Name</option>
                   <option value="year">Sort by Year</option>
@@ -366,20 +366,20 @@ function App() {
               </div>
             </div>
 
-            {filteredStudents.length === 0 ? (
+            {filteredCustomers.length === 0 ? (
               <div style={{ background: '#fff', borderRadius: '12px', padding: '1rem', border: '1px dashed #ffb3c1', color: '#7a1e1e' }}>
-                No records found. Try a different search term.
+                No customer records found. Try a different search term.
               </div>
             ) : (
               <>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem', marginBottom: '0.9rem' }}>
-                  {filteredStudents.map((student) => (
-                    <div key={student.id} style={{ background: '#fff', borderRadius: '12px', padding: '0.9rem', border: '1px solid #ffd6e0' }}>
-                      <h3 style={{ margin: '0 0 0.35rem', color: '#d62828' }}>{student.fullName}</h3>
-                      <p style={{ margin: '0 0 0.25rem' }}><strong>Email:</strong> {student.email}</p>
-                      <p style={{ margin: '0 0 0.25rem' }}><strong>Branch:</strong> {student.branch}</p>
-                      <p style={{ margin: '0 0 0.25rem' }}><strong>Graduation:</strong> {student.graduationYear}</p>
-                      <p style={{ margin: 0 }}><strong>Skills:</strong> {student.skills}</p>
+                  {filteredCustomers.map((customer) => (
+                    <div key={customer.id} style={{ background: '#fff', borderRadius: '12px', padding: '0.9rem', border: '1px solid #ffd6e0' }}>
+                      <h3 style={{ margin: '0 0 0.35rem', color: '#d62828' }}>{customer.fullName}</h3>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Email:</strong> {customer.email}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Branch:</strong> {customer.branch}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Graduation:</strong> {customer.graduationYear}</p>
+                      <p style={{ margin: 0 }}><strong>Skills:</strong> {customer.skills}</p>
                     </div>
                   ))}
                 </div>
@@ -396,13 +396,13 @@ function App() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredStudents.map((student) => (
-                        <tr key={student.id}>
-                          <td style={tableCellStyle}>{student.fullName}</td>
-                          <td style={tableCellStyle}>{student.email}</td>
-                          <td style={tableCellStyle}>{student.branch}</td>
-                          <td style={tableCellStyle}>{student.graduationYear}</td>
-                          <td style={tableCellStyle}>{student.skills}</td>
+                      {filteredCustomers.map((customer) => (
+                        <tr key={customer.id}>
+                          <td style={tableCellStyle}>{customer.fullName}</td>
+                          <td style={tableCellStyle}>{customer.email}</td>
+                          <td style={tableCellStyle}>{customer.branch}</td>
+                          <td style={tableCellStyle}>{customer.graduationYear}</td>
+                          <td style={tableCellStyle}>{customer.skills}</td>
                         </tr>
                       ))}
                     </tbody>
