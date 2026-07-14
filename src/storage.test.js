@@ -46,3 +46,23 @@ test('readStoredItems falls back to a default array', () => {
   const items = readStoredItems('favorites', []);
   assert.deepEqual(items, []);
 });
+
+test('readStoredValue and writeStoredValue persist arbitrary data', () => {
+  const storage = createLocalStorage();
+  globalThis.window = { localStorage: storage };
+
+  writeStoredValue('theme', 'dark');
+  const loadedTheme = readStoredValue('theme', 'light');
+
+  assert.equal(loadedTheme, 'dark');
+});
+
+test('readSessionValue and writeSessionValue persist current-session data', () => {
+  const storage = createLocalStorage();
+  globalThis.window = { localStorage: storage, sessionStorage: storage };
+
+  writeSessionValue('lastVisited', '/dashboard');
+  const visited = readSessionValue('lastVisited', '/');
+
+  assert.equal(visited, '/dashboard');
+});

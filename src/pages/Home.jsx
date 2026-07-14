@@ -1,14 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { readStoredItems, syncStoredList } from '../storage';
+import { readSessionValue, writeSessionValue, readStoredItems, syncStoredList } from '../storage';
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => readSessionValue('homeSearch', ''));
   const [favorites, setFavorites] = useState(() => readStoredItems('favorites', []));
   const [recentlyViewed, setRecentlyViewed] = useState(() => readStoredItems('recentlyViewed', []));
+
+  useEffect(() => {
+    writeSessionValue('homeSearch', query);
+  }, [query]);
+
+  useEffect(() => {
+    writeSessionValue('lastVisitedPage', '/');
+  }, []);
 
   useEffect(() => {
     let active = true;

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { readStoredItems } from '../storage';
+import { readSessionValue, writeSessionValue, readStoredItems } from '../storage';
 
 const summaryStats = [
   { label: 'User Info', value: 'Asha Reddy', detail: 'Premium Customer' },
@@ -20,6 +20,10 @@ function Dashboard() {
   const [error, setError] = useState('');
   const [favorites, setFavorites] = useState(() => readStoredItems('favorites', []));
   const [recentlyViewed] = useState(() => readStoredItems('recentlyViewed', []));
+
+  useEffect(() => {
+    writeSessionValue('lastVisitedPage', '/dashboard');
+  }, []);
 
   useEffect(() => {
     async function loadProducts() {

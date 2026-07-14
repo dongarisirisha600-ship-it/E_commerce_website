@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login({ setIsLoggedIn }) {
+function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -10,7 +10,7 @@ function Login({ setIsLoggedIn }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (username === 'admin@example.com' && password === 'Admin@123!') {
-      setIsLoggedIn(true);
+      onLogin({ username: 'admin@example.com', displayName: 'Admin' });
       navigate('/dashboard');
     } else {
       setError('Invalid credentials. Please try again.');
