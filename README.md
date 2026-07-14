@@ -1,18 +1,31 @@
-# React + Vite
+# Student Registration Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This project now delivers a polished registration experience built with React and Vite. The UI collects student profile details, validates each field, and provides a success state with submitted details after a successful submission.
 
-Currently, two official plugins are available:
+## Features
+- Controlled form fields powered by React state
+- Form validation for name, email, mobile, password, confirm password, and terms acceptance
+- Password strength meter and show/hide password toggles
+- Resume upload field with UI-only handling
+- Reset button and success confirmation state
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Concepts Covered
+- useState for controlled components
+- onChange, onSubmit, and onClick event handling
+- Client-side validation and error messaging
+- Conditional rendering for success and submission details
 
-## React Compiler
+## Screenshots
+- Registration form overview: [docs/screenshots/registration-page.svg](docs/screenshots/registration-page.svg)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Run locally
+1. Install dependencies: npm install
+2. Start the development server: npm run dev
+3. Run validation tests: npm test
+4. Build the project: npm run build
 
-Note: This will impact Vite dev & build performances.
+## Project Structure
+- src/main.jsx: main registration page component
+- src/registrationValidation.js: validation logic
+- src/registrationValidation.test.js: regression tests
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.

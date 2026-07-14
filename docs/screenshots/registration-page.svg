@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <rect width="1280" height="800" fill="#fff5f8"/>
+  <rect x="80" y="60" width="1120" height="680" rx="28" fill="#ffffff" stroke="#ffd6e0" stroke-width="2"/>
+  <rect x="80" y="60" width="1120" height="140" rx="28" fill="#d62828"/>
+  <text x="120" y="115" fill="#ffffff" font-family="Arial" font-size="28" font-weight="700">Student Registration Portal</text>
+  <text x="120" y="150" fill="#ffe4ea" font-family="Arial" font-size="18">Validated form with success state and reset controls</text>
+  <rect x="120" y="235" width="510" height="360" rx="20" fill="#fff5f8" stroke="#ffd6e0"/>
+  <rect x="150" y="270" width="180" height="16" rx="8" fill="#d62828"/>
+  <rect x="150" y="305" width="220" height="14" rx="7" fill="#ffb3c1"/>
+  <rect x="150" y="340" width="180" height="14" rx="7" fill="#ffb3c1"/>
+  <rect x="150" y="375" width="200" height="14" rx="7" fill="#ffb3c1"/>
+  <rect x="150" y="420" width="140" height="38" rx="10" fill="#d62828"/>
+  <rect x="320" y="420" width="120" height="38" rx="10" fill="#ffffff" stroke="#ffb3c1"/>
+  <rect x="700" y="235" width="320" height="230" rx="20" fill="#ecfdf3" stroke="#a7f3d0"/>
+  <text x="730" y="280" fill="#15803d" font-family="Arial" font-size="22" font-weight="700">Success</text>
+  <text x="730" y="320" fill="#166534" font-family="Arial" font-size="16">Registration successful for Asha Reddy!</text>
+  <rect x="730" y="350" width="220" height="14" rx="7" fill="#a7f3d0"/>
+  <rect x="730" y="380" width="160" height="14" rx="7" fill="#a7f3d0"/>
+</svg>
