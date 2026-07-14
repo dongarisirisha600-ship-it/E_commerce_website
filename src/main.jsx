@@ -34,9 +34,9 @@ const passwordStrength = (password) => {
 };
 
 const initialCustomers = [
-  { id: 1, fullName: 'Asha Reddy', email: 'asha@example.com', branch: 'Electronics', graduationYear: '2026', skills: 'React, UI/UX' },
-  { id: 2, fullName: 'Kiran Rao', email: 'kiran@example.com', branch: 'Retail', graduationYear: '2027', skills: 'JavaScript, Node.js' },
-  { id: 3, fullName: 'Nikhil Verma', email: 'nikhil@example.com', branch: 'Logistics', graduationYear: '2028', skills: 'Python, Data Science' },
+  { id: 1, fullName: 'Asha Reddy', email: 'asha@example.com', branch: 'Laptop', graduationYear: '₹45,000', skills: '1.2k' },
+  { id: 2, fullName: 'Kiran Rao', email: 'kiran@example.com', branch: 'Smartphone', graduationYear: '₹22,000', skills: '980' },
+  { id: 3, fullName: 'Nikhil Verma', email: 'nikhil@example.com', branch: 'Headphones', graduationYear: '₹3,500', skills: '2.4k' },
 ];
 
 function App() {
@@ -332,9 +332,9 @@ function App() {
                     <div key={customer.id} style={{ background: '#fff', borderRadius: '12px', padding: '0.9rem', border: '1px solid #ffd6e0' }}>
                       <h3 style={{ margin: '0 0 0.35rem', color: '#d62828' }}>{customer.fullName}</h3>
                       <p style={{ margin: '0 0 0.25rem' }}><strong>Email:</strong> {customer.email}</p>
-                      <p style={{ margin: '0 0 0.25rem' }}><strong>Branch:</strong> {customer.branch}</p>
-                      <p style={{ margin: '0 0 0.25rem' }}><strong>Graduation:</strong> {customer.graduationYear}</p>
-                      <p style={{ margin: 0 }}><strong>Skills:</strong> {customer.skills}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Product:</strong> {customer.branch}</p>
+                      <p style={{ margin: '0 0 0.25rem' }}><strong>Cost:</strong> {customer.graduationYear}</p>
+                      <p style={{ margin: 0 }}><strong>Views:</strong> {customer.skills}</p>
                     </div>
                   ))}
                 </div>
@@ -345,9 +345,9 @@ function App() {
                       <tr style={{ background: '#ffe4ea' }}>
                         <th style={tableCellStyle}>Name</th>
                         <th style={tableCellStyle}>Email</th>
-                        <th style={tableCellStyle}>Branch</th>
-                        <th style={tableCellStyle}>Graduation</th>
-                        <th style={tableCellStyle}>Skills</th>
+                        <th style={tableCellStyle}>Product</th>
+                        <th style={tableCellStyle}>Cost</th>
+                        <th style={tableCellStyle}>Views</th>
                       </tr>
                     </thead>
                     <tbody>
