@@ -28,7 +28,7 @@ export const stats = [
   { title: 'Shipping Speed', value: '24h' }
 ];
 
-export const sidebarLinks = ['Home', 'Products', 'About', 'Contact'];
+export const sidebarLinks = ['Home', 'Products', 'About', 'Contact', 'Register'];
 
 export function formatCurrency(amount) {
   return `$${amount.toFixed(2)}`;

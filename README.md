@@ -8,6 +8,7 @@ MegaMart is a simple React + Vite frontend project created to demonstrate core R
 - Home page with hero section and product cards
 - Products page
 - About and Contact pages
+- Registration page with form validation
 - Reusable components such as Navbar, Sidebar, Footer, Button, Card, and StatBox
 - External CSS styling and component-specific CSS files
 
@@ -17,7 +18,10 @@ MegaMart is a simple React + Vite frontend project created to demonstrate core R
 - JSX syntax
 - Functional components
 - Props (read-only data flow)
-- Default and named exports
+- State management with useState
+- Event handling with onChange, onSubmit, and onClick
+- Controlled components and two-way data binding
+- Form validation and error handling
 - Component-based architecture
 - Reusable UI development
 - Styling with external CSS

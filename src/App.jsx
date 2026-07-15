@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Register from './pages/Register';
 import { sidebarLinks } from './data/catalog';
 import './App.css';
 
@@ -20,6 +21,8 @@ function App() {
         return <About />;
       case 'contact':
         return <Contact />;
+      case 'register':
+        return <Register />;
       default:
         return <Home onNavigate={setActivePage} />;
     }
