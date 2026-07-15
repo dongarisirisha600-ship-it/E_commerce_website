@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { validateLoginForm } from '../loginValidation';
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -9,11 +10,13 @@ function Login({ onLogin }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (username === 'admin@example.com' && password === 'Admin@123!') {
+    const result = validateLoginForm({ username, password });
+    if (result.isValid) {
       onLogin({ username: 'admin@example.com', displayName: 'Admin' });
       navigate('/dashboard');
+      setError('');
     } else {
-      setError('Invalid credentials. Please try again.');
+      setError(result.errors.credentials || result.errors.username || result.errors.password || 'Invalid credentials. Please try again.');
     }
   };
 

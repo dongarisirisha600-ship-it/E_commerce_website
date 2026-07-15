@@ -9,6 +9,17 @@ export const validateLoginForm = (values) => {
     errors.password = 'Password is required.';
   }
 
+  const normalizedUsername = values.username?.trim().toLowerCase();
+  const normalizedPassword = values.password?.trim();
+
+  if (
+    normalizedUsername &&
+    normalizedPassword &&
+    !(normalizedUsername === 'admin@example.com' && normalizedPassword === 'Admin@123!')
+  ) {
+    errors.credentials = 'Invalid credentials. Please try again.';
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,

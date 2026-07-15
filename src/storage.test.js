@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readStoredItems, syncStoredList } from './storage.js';
+import { readSessionValue, readStoredItems, readStoredValue, syncStoredList, writeSessionValue, writeStoredValue } from './storage.js';
 
 function createLocalStorage() {
   const store = new Map();
