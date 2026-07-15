@@ -1,15 +1,4 @@
 body {
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: #fffafc;
-  font-family: Arial, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
+  font-family: Inter, Arial, sans-serif;
 }

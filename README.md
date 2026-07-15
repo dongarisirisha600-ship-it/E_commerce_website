@@ -1,50 +1,47 @@
 # MegaMart
 
-This project is a React and Vite frontend for the MegaMart shopping portal. It now demonstrates dynamic routing, API-driven content, loading/error states, and local storage persistence while keeping the reusable component structure from the earlier assignment.
+MegaMart is a simple React + Vite frontend project created to demonstrate core React concepts such as components, props, reusable UI, JSX, and component-based architecture.
 
-## New Features
-- Dynamic routing with route parameters and reusable details pages
-- Live product data fetched from the Fake Store API
-- Search functionality on the home page
-- View links that navigate to dedicated product details pages
-- Loading and error states for API calls
-- Local storage support for favorites and recently viewed items
-- Custom 404 page for unknown routes
+## Features Implemented
+- Header/Navbar
+- Sidebar navigation
+- Home page with hero section and product cards
+- Products page
+- About and Contact pages
+- Reusable components such as Navbar, Sidebar, Footer, Button, Card, and StatBox
+- External CSS styling and component-specific CSS files
 
-## APIs Used
-- Fake Store API: https://fakestoreapi.com/products
+## React Concepts Used
+- Introduction to React
+- Vite project setup
+- JSX syntax
+- Functional components
+- Props (read-only data flow)
+- Default and named exports
+- Component-based architecture
+- Reusable UI development
+- Styling with external CSS
 
-## React Concepts Implemented
-- Dynamic Routing
-- Route Parameters
-- useParams()
-- Dynamic URL Navigation
-- View Button Functionality
-- useEffect()
-- Component Lifecycle
-- Dependency Array
-- API Calls
-- Side Effects
-- Loading State Management
-- Error Handling
-- Local Storage Persistence
-- 404 Page and Wildcard Route
+## Difference Between Class and Functional Components
+- Class components use ES6 class syntax and lifecycle methods.
+- Functional components are simpler, use JavaScript functions, and are preferred in modern React.
+- Functional components can use hooks such as useState for state management.
+
+## Explanation of Props and main.jsx
+- Props are read-only inputs passed from parent components to child components.
+- main.jsx is the entry point of the React application. It renders the root component into the DOM.
+
+## Styling Approach
+- External CSS files were used for global and component-level styling.
+- Each component has its own CSS file for better organization and reuse.
 
 ## Screenshots
-- Application overview: [docs/screenshots/customer-portal.svg](docs/screenshots/customer-portal.svg)
+- Run the app locally and capture screenshots from the browser.
 
-## Run Locally
+## How to Run
 1. npm install
 2. npm run dev
-3. npm test
-4. npm run build
 
-## Project Structure
-- src/App.jsx: main route configuration
-- src/pages/Home.jsx: API-driven landing page with search and favorites
-- src/pages/Dashboard.jsx: dashboard summary and featured products
-- src/pages/Details.jsx: dynamic details page for each product
-- src/storage.js: local storage helpers for persistence
-- src/components/: reusable UI components
-- src/registrationValidation.js and src/loginValidation.js: validation logic
+## GitHub Submission
+- The project is pushed to GitHub with a clean React/Vite setup.
 

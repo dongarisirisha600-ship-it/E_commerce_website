@@ -1,14 +1,41 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-  color: #1f2937;
+:root {
+  font-family: Inter, Arial, sans-serif;
+  line-height: 1.5;
+  color: #111827;
+  background: #f8fafc;
 }
 
-.app {
+body {
+  margin: 0;
+  background: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-shell {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.content-area {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
 }

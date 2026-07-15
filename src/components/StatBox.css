@@ -1,0 +1,16 @@
+.stat-box {
+  background: #eff6ff;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-box h4 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.stat-box p {
+  margin: 0.25rem 0 0;
+  color: #4b5563;
+}

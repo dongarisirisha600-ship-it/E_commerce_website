@@ -1,12 +1,16 @@
-import React from 'react';
+import './Card.css';
 
-function Card({ title, description, badge }) {
+function Card({ title, description, price, badge }) {
   return (
-    <div style={{ background: '#fff', borderRadius: '14px', padding: '1rem', border: '1px solid #ffd6e0' }}>
-      <div style={{ color: '#d62828', fontWeight: '700', marginBottom: '0.3rem' }}>{badge}</div>
-      <h3 style={{ margin: '0 0 0.4rem', color: '#6b1f2b' }}>{title}</h3>
-      <p style={{ margin: 0, lineHeight: 1.5 }}>{description}</p>
-    </div>
+    <article className="card">
+      <span className="badge">{badge}</span>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <div className="card-footer">
+        <strong>${price}</strong>
+        <button className="card-btn">Buy Now</button>
+      </div>
+    </article>
   );
 }
 
