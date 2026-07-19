@@ -3,49 +3,227 @@
 MegaMart is a simple React + Vite frontend project created to demonstrate core React concepts such as components, props, reusable UI, JSX, and component-based architecture.
 
 ## Features Implemented
-- Header/Navbar
-- Sidebar navigation
-- Home page with hero section and product cards
-- Products page
+
+- Header/Navbar with navigation and user authentication
+- Sidebar navigation with category filtering
+- Home page with hero section and featured product cards
+- Products page with product listing and filtering
 - About and Contact pages
-- Registration page with form validation
-- Reusable components such as Navbar, Sidebar, Footer, Button, Card, and StatBox
+- Registration page with comprehensive form validation
+- Login page with credential validation and session management
+- Dashboard and user profile management
+- Settings page for user preferences
+- Cart management with product addition and removal
+- Checkout workflow
+- Reusable components such as Navbar, Sidebar, Footer, Button, Card, and StatBadge
 - External CSS styling and component-specific CSS files
+- LocalStorage and SessionStorage for data persistence
+- Responsive design for mobile and desktop
 
 ## React Concepts Used
-- Introduction to React
-- Vite project setup
-- JSX syntax
-- Functional components
-- Props (read-only data flow)
-- State management with useState
-- Event handling with onChange, onSubmit, and onClick
+
+- Introduction to React and Functional Components
+- Vite project setup and configuration
+- JSX syntax and component structure
+- Functional components with React hooks
+- Props (read-only data flow between components)
+- State management with `useState()` hook
+- Event handling with `onChange`, `onSubmit`, and `onClick`
 - Controlled components and two-way data binding
 - Form validation and error handling
 - Component-based architecture
-- Reusable UI development
-- Styling with external CSS
+- Reusable UI component development
+- Styling with external CSS and component-specific CSS files
+- React Router for client-side navigation
+- Context API for global state management (CartContext, AuthContext)
+- LocalStorage and SessionStorage APIs for persistence
+- Conditional rendering and component composition
 
 ## Difference Between Class and Functional Components
-- Class components use ES6 class syntax and lifecycle methods.
-- Functional components are simpler, use JavaScript functions, and are preferred in modern React.
-- Functional components can use hooks such as useState for state management.
+
+- **Class Components**: Use ES6 class syntax, implement lifecycle methods (componentDidMount, componentDidUpdate, etc.), have more boilerplate code
+- **Functional Components**: Use JavaScript functions, simpler and more concise, use hooks like `useState`, `useEffect`, and `useContext`
+- Functional components are the modern standard and are preferred for new React projects
 
 ## Explanation of Props and main.jsx
-- Props are read-only inputs passed from parent components to child components.
-- main.jsx is the entry point of the React application. It renders the root component into the DOM.
+
+- **Props**: Read-only inputs passed from parent components to child components, enabling data flow and component reusability across the application
+- **main.jsx**: The entry point of the React application. It imports the root App component and renders it into the DOM using `ReactDOM.createRoot()`, mounting the entire React tree to the #root element in index.html
 
 ## Styling Approach
-- External CSS files were used for global and component-level styling.
-- Each component has its own CSS file for better organization and reuse.
 
-## Screenshots
-- Run the app locally and capture screenshots from the browser.
+- Global styling with App.css for layout and typography
+- Component-specific CSS files for isolated styling
+- Responsive design with media queries for mobile-first approach
+- CSS Grid and Flexbox for modern layouts
+- Consistent color scheme and typography system
+- CSS variables for maintainability
+
+## Project Structure
+
+```
+E_commerce_website/
+├── src/
+│   ├── components/
+│   │   ├── Navbar/
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Navbar.css
+│   │   ├── Sidebar/
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── Sidebar.css
+│   │   ├── Footer/
+│   │   │   ├── Footer.jsx
+│   │   │   └── Footer.css
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   ├── StatBadge.jsx
+│   │   ├── FormField.jsx
+│   │   └── PasswordField.jsx
+│   ├── pages/
+│   │   ├── Home/
+│   │   │   ├── Home.jsx
+│   │   │   └── Home.css
+│   │   ├── Products/
+│   │   │   ├── Products.jsx
+│   │   │   └── Products.css
+│   │   ├── ProductDetails/
+│   │   │   ├── ProductDetails.jsx
+│   │   │   └── ProductDetails.css
+│   │   ├── Cart/
+│   │   │   ├── Cart.jsx
+│   │   │   └── Cart.css
+│   │   ├── Checkout/
+│   │   │   ├── Checkout.jsx
+│   │   │   └── Checkout.css
+│   │   ├── Login/
+│   │   │   ├── Login.jsx
+│   │   │   └── Login.css
+│   │   ├── Register/
+│   │   │   ├── Register.jsx
+│   │   │   └── Register.css
+│   │   ├── About.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Profile.jsx
+│   │   ├── Settings.jsx
+│   │   ├── Presentation.jsx
+│   │   └── NotFound.jsx
+│   ├── context/
+│   │   ├── CartContext.jsx
+│   │   └── AuthContext.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── utils/
+│   │   └── helpers.js
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   ├── main.jsx
+│   ├── loginValidation.js
+│   ├── registrationValidation.js
+│   ├── storage.js
+│   └── *.test.js
+├── public/
+│   └── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
 
 ## How to Run
-1. npm install
-2. npm run dev
 
-## GitHub Submission
-- The project is pushed to GitHub with a clean React/Vite setup.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dongarisirisha600-ship-it/E_commerce_website.git
+   cd E_commerce_website
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open the app at `http://localhost:5173`
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `dist/` folder.
+
+## Testing
+
+The project includes automated tests for:
+- Login form validation
+- Registration form validation
+- Storage utilities (LocalStorage and SessionStorage)
+- Presentation data structure
+
+Run tests with:
+```bash
+npm test
+```
+
+## Key Features Implemented
+
+### Authentication & Login
+- User login with email/username and password
+- Credential validation (admin@example.com / Admin@123!)
+- Error handling and user feedback
+- Session persistence with LocalStorage
+- Conditional routing based on authentication state
+- Logout functionality
+
+### Registration & Form Validation
+- Fully controlled form components
+- Real-time validation feedback
+- Email format validation
+- Password strength validation
+- Confirm password matching
+- Mobile number validation
+- Terms acceptance checkbox
+- Form reset after successful submission
+- Display of submitted user details
+
+### Component Architecture
+- Reusable UI components (Button, Card, StatBadge)
+- Props-based data passing between components
+- Clear separation of concerns
+- Responsive component design
+- CSS modules for component styling
+
+### State Management
+- Local component state with `useState()` hook
+- Global state with Context API
+- LocalStorage for persistent authentication
+- SessionStorage for session-specific data
+- Cart state management
+- Theme preference persistence
+
+## Technologies Used
+
+- React 18.3.1 - UI library
+- Vite 5.4.21 - Build tool and dev server
+- React Router DOM 6.18.1 - Client-side routing
+- Modern JavaScript (ES6+)
+- CSS3 with Flexbox and Grid
+- LocalStorage and SessionStorage APIs
+
+## GitHub Repository
+
+Repository: https://github.com/dongarisirisha600-ship-it/E_commerce_website
+
+## Contributors
+
+- [@dongarisirisha600-ship-it](https://github.com/dongarisirisha600-ship-it) - Sirisha
+
+## License
+
+This project is open source and available for educational purposes.
 
