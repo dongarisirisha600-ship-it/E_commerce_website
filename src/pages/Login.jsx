@@ -1,29 +1,46 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { writeStoredValue } from '../utils/storage';
+import api from '../services/api';
+import { writeStoredValue, readStoredValue } from '../utils/storage';
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState(() => ({
+    email: readStoredValue('rememberedEmail', ''),
+    password: ''
+  }));
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(Boolean(readStoredValue('rememberedEmail', '')));
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-    if (formData.email === 'admin@example.com' && formData.password === 'Admin@123!') {
-      const userData = { name: 'Admin User', email: formData.email };
+    try {
+      const response = await api.post('/auth/login', formData);
+      const userData = response.data.user;
       writeStoredValue('authUser', userData);
+      if (rememberMe) {
+        writeStoredValue('rememberedEmail', formData.email);
+      } else {
+        writeStoredValue('rememberedEmail', '');
+      }
       onLogin(userData);
       const redirectTo = location.state?.from?.pathname || '/dashboard';
       navigate(redirectTo, { replace: true });
-    } else {
-      setError('Invalid credentials. Try admin@example.com / Admin@123!');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,11 +55,18 @@ function Login({ onLogin }) {
         </label>
         <label>
           Password
-          <input type="password" name="password" value={formData.password} onChange={handleChange} />
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} />
+            <button type="button" className="secondary" onClick={() => setShowPassword((prev) => !prev)}>{showPassword ? 'Hide' : 'Show'}</button>
+          </div>
+        </label>
+        <label className="checkbox-row">
+          <input type="checkbox" checked={rememberMe} onChange={() => setRememberMe((prev) => !prev)} />
+          Remember me
         </label>
         {error && <p className="error">{error}</p>}
         <div className="actions">
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isLoading}>{isLoading ? 'Signing in...' : 'Login'}</button>
         </div>
       </form>
     </section>

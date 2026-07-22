@@ -11,6 +11,10 @@ MegaMart is a React + Vite frontend project paired with an Express + MongoDB bac
 - Validation errors and meaningful API responses
 - Search, category filtering, and pagination support for product listing
 - Request logging and centralized error handling middleware
+- File upload handling with Multer for profile images
+- Static file serving for uploaded images via Express
+- Secure user registration and login with bcrypt password hashing
+- Generic authentication errors to avoid leaking user credentials
 
 ## API Endpoints
 
@@ -19,6 +23,8 @@ MegaMart is a React + Vite frontend project paired with an Express + MongoDB bac
 - POST /api/products - create a new product
 - PUT /api/products/:id - update an existing product
 - DELETE /api/products/:id - delete a product
+- POST /api/auth/register - register a new user and optionally upload a profile image
+- POST /api/auth/login - authenticate a user with email and password
 
 ## Product Schema Rules
 
@@ -51,6 +57,13 @@ MegaMart is a React + Vite frontend project paired with an Express + MongoDB bac
    ```bash
    npm start
    ```
+
+## Authentication Flow
+
+1. Open the registration page and submit a name, email, password, and optional profile image.
+2. The backend hashes the password with bcrypt, stores the user in MongoDB, and saves the profile image path.
+3. Use the login page to authenticate. Successful login stores the user profile in browser storage and displays the uploaded image in the navbar/dashboard.
+4. Uploaded images are available at `/uploads/<filename>`.
 
 ## Notes
 
@@ -248,12 +261,12 @@ npm test
 ## Key Features Implemented
 
 ### Authentication & Login
-- User login with email/username and password
-- Credential validation (admin@example.com / Admin@123!)
-- Error handling and user feedback
+- Secure user registration and login with bcrypt password hashing
+- Credential validation and generic error handling for invalid sign-ins
 - Session persistence with LocalStorage
 - Conditional routing based on authentication state
 - Logout functionality
+- Profile image upload and display after authentication
 
 ### Registration & Form Validation
 - Fully controlled form components

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 import './Register.css';
 
 const initialFormData = {
-  fullName: '',
+  name: '',
   email: '',
   mobile: '',
   password: '',
@@ -13,17 +15,29 @@ const initialFormData = {
   branch: '',
   graduationYear: '',
   skills: '',
-  resume: '',
-  acceptedTerms: false
+  acceptedTerms: false,
+  profileImage: null
 };
 
 function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
 
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value, type, checked, files } = event.target;
+
+    if (type === 'file' && files?.[0]) {
+      const file = files[0];
+      setPreviewImage(URL.createObjectURL(file));
+      setFormData((prev) => ({ ...prev, [name]: file }));
+      return;
+    }
+
     const newValue = type === 'checkbox' ? checked : value;
     setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
@@ -31,7 +45,7 @@ function Register() {
   const validateForm = () => {
     const nextErrors = {};
 
-    if (!formData.fullName.trim()) nextErrors.fullName = 'Full name is required.';
+    if (!formData.name.trim()) nextErrors.name = 'Full name is required.';
     if (!formData.email.trim()) nextErrors.email = 'Email is required.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) nextErrors.email = 'Enter a valid email address.';
 
@@ -57,16 +71,49 @@ function Register() {
     return nextErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const nextErrors = validateForm();
     setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length === 0) {
-      setSubmitted(true);
-      setFormData(initialFormData);
-    } else {
+    if (Object.keys(nextErrors).length > 0) {
       setSubmitted(false);
+      setMessage('');
+      return;
+    }
+
+    setIsLoading(true);
+    setMessage('');
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('mobile', formData.mobile);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('gender', formData.gender);
+      formDataToSend.append('dob', formData.dob);
+      formDataToSend.append('collegeName', formData.collegeName);
+      formDataToSend.append('branch', formData.branch);
+      formDataToSend.append('graduationYear', formData.graduationYear);
+      formDataToSend.append('skills', formData.skills);
+      formDataToSend.append('acceptedTerms', formData.acceptedTerms ? 'true' : 'false');
+      if (formData.profileImage) formDataToSend.append('profileImage', formData.profileImage);
+
+      const response = await api.post('/auth/register', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setSubmitted(true);
+      setMessage(response.data.message || 'Registration successful.');
+      setFormData(initialFormData);
+      setPreviewImage('');
+      setTimeout(() => navigate('/login'), 1200);
+    } catch (error) {
+      setSubmitted(false);
+      setMessage(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,6 +121,8 @@ function Register() {
     setFormData(initialFormData);
     setErrors({});
     setSubmitted(false);
+    setMessage('');
+    setPreviewImage('');
   };
 
   return (
@@ -85,8 +134,8 @@ function Register() {
         <div className="form-grid">
           <label>
             Full Name
-            <input name="fullName" value={formData.fullName} onChange={handleChange} />
-            {errors.fullName && <span className="error">{errors.fullName}</span>}
+            <input name="name" value={formData.name} onChange={handleChange} />
+            {errors.name && <span className="error">{errors.name}</span>}
           </label>
 
           <label>
@@ -155,8 +204,9 @@ function Register() {
           </label>
 
           <label>
-            Resume Upload (UI only)
-            <input type="file" name="resume" onChange={handleChange} />
+            Profile Image
+            <input type="file" accept="image/*" name="profileImage" onChange={handleChange} />
+            {previewImage && <img src={previewImage} alt="Preview" className="profile-preview" />}
           </label>
         </div>
 
@@ -167,15 +217,15 @@ function Register() {
         {errors.acceptedTerms && <span className="error">{errors.acceptedTerms}</span>}
 
         <div className="actions">
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isLoading}>{isLoading ? 'Registering...' : 'Register'}</button>
           <button type="button" className="secondary" onClick={handleReset}>Reset</button>
         </div>
       </form>
 
-      {submitted && (
-        <div className="success-box">
-          <h3>Registration Successful!</h3>
-          <p>Your details have been submitted successfully.</p>
+      {message && (
+        <div className={submitted ? 'success-box' : 'error-box'}>
+          <h3>{submitted ? 'Registration Successful!' : 'Registration Issue'}</h3>
+          <p>{message}</p>
         </div>
       )}
     </section>

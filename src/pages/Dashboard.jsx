@@ -6,7 +6,10 @@ function Dashboard({ user, onLogout }) {
   return (
     <div>
       <h2>Dashboard</h2>
-      <p>Welcome back, {user?.name || 'Guest'}.</p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+        {user?.profileImage ? <img src={`http://localhost:5000${user.profileImage}`} alt="Profile" className="profile-preview" /> : null}
+        <p style={{ margin: 0 }}>Welcome back, {user?.name || 'Guest'}.</p>
+      </div>
       <div className="actions" style={{ marginBottom: '1rem' }}>
         <button onClick={() => navigate(-1)}>Go Back</button>
         <button className="secondary" onClick={onLogout}>Logout</button>

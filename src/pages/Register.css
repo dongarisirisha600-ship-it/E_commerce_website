@@ -29,9 +29,31 @@ input, select, button {
   border-radius: 8px;
 }
 
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .error {
   color: #dc2626;
   font-size: 0.9rem;
+}
+
+.error-box {
+  border: 1px solid #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.profile-preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  margin-top: 0.25rem;
 }
 
 .checkbox-row {

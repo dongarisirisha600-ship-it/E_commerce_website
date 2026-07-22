@@ -13,6 +13,7 @@ function Navbar({ brand, links, user, onLogout }) {
         ))}
         {user ? (
           <>
+            {user.profileImage ? <img src={`http://localhost:5000${user.profileImage}`} alt="Profile" className="profile-pill" /> : null}
             <NavLink to="/dashboard/overview" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
               Dashboard
             </NavLink>
