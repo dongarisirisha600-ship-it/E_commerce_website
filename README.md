@@ -4,20 +4,17 @@ MegaMart is a simple React + Vite frontend project created to demonstrate core R
 
 ## Features Implemented
 
-- Header/Navbar with navigation and user authentication
-- Sidebar navigation with category filtering
+- Header/Navbar with route-based navigation and active link highlighting
+- Sidebar navigation with shared layout across pages
 - Home page with hero section and featured product cards
-- Products page with product listing and filtering
+- Products page with product listing and dynamic detail links
 - About and Contact pages
 - Registration page with comprehensive form validation
-- Login page with credential validation and session management
-- Dashboard and user profile management
-- Settings page for user preferences
-- Cart management with product addition and removal
-- Checkout workflow
+- Login page with credential validation and protected routing
+- Dashboard with nested overview, profile, and settings routes
+- 404 page with a friendly return-home experience
 - Reusable components such as Navbar, Sidebar, Footer, Button, Card, and StatBadge
 - External CSS styling and component-specific CSS files
-- LocalStorage and SessionStorage for data persistence
 - Responsive design for mobile and desktop
 
 ## React Concepts Used
@@ -34,9 +31,10 @@ MegaMart is a simple React + Vite frontend project created to demonstrate core R
 - Component-based architecture
 - Reusable UI component development
 - Styling with external CSS and component-specific CSS files
-- React Router for client-side navigation
-- Context API for global state management (CartContext, AuthContext)
-- LocalStorage and SessionStorage APIs for persistence
+- React Router DOM for client-side navigation with BrowserRouter, Routes, Route, Link, NavLink, and nested routing
+- Dynamic routing with URL params using useParams()
+- Programmatic navigation with useNavigate()
+- Shared layout components and 404 handling
 - Conditional rendering and component composition
 
 ## Difference Between Class and Functional Components

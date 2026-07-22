@@ -1,47 +1,72 @@
-import { useState } from 'react';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import Layout from './components/Layout';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Register from './pages/Register';
-import { sidebarLinks } from './data/catalog';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import DashboardOverview from './pages/DashboardOverview';
+import DashboardProfile from './pages/DashboardProfile';
+import DashboardSettings from './pages/DashboardSettings';
+import Details from './pages/Details';
+import NotFound from './pages/NotFound';
+import { readStoredValue, writeStoredValue } from './utils/storage';
 import './App.css';
 
-function App() {
-  const [activePage, setActivePage] = useState('home');
+function ProtectedRoute({ isAuthenticated, children }) {
+  const location = useLocation();
+  return isAuthenticated ? children : <Navigate to="/login" replace state={{ from: location.pathname }} />;
+}
 
-  const renderPage = () => {
-    switch (activePage) {
-      case 'products':
-        return <Products />;
-      case 'about':
-        return <About />;
-      case 'contact':
-        return <Contact />;
-      case 'register':
-        return <Register />;
-      default:
-        return <Home onNavigate={setActivePage} />;
+function App() {
+  const [user, setUser] = useState(() => readStoredValue('authUser', null));
+
+  useEffect(() => {
+    if (user) {
+      writeStoredValue('authUser', user);
+    } else {
+      writeStoredValue('authUser', null);
     }
+  }, [user]);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
   };
 
   return (
-    <div className="app-shell">
-      <Navbar
-        brand="MegaMart"
-        links={['Home', 'Products', 'About', 'Contact']}
-        activePage={activePage}
-        onNavigate={setActivePage}
-      />
-      <main className="layout">
-        <Sidebar links={sidebarLinks} activePage={activePage} onNavigate={setActivePage} />
-        <section className="content-area">{renderPage()}</section>
-      </main>
-      <Footer copyright="© 2026 MegaMart. Built with React and Vite." />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout user={user} onLogout={handleLogout} />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<Details />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute isAuthenticated={Boolean(user)}>
+                <Dashboard user={user} onLogout={handleLogout} />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="overview" element={<DashboardOverview />} />
+            <Route path="profile" element={<DashboardProfile />} />
+            <Route path="settings" element={<DashboardSettings />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

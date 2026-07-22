@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import './Card.css';
 
-function Card({ title, description, price, badge }) {
+function Card({ id, title, description, price, badge }) {
   return (
     <article className="card">
       <span className="badge">{badge}</span>
@@ -8,7 +9,7 @@ function Card({ title, description, price, badge }) {
       <p>{description}</p>
       <div className="card-footer">
         <strong>${price}</strong>
-        <button className="card-btn">Buy Now</button>
+        <Link className="card-btn" to={`/products/${id}`}>View Details</Link>
       </div>
     </article>
   );

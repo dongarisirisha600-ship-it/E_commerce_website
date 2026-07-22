@@ -14,3 +14,13 @@
 .sidebar li {
   margin-bottom: 0.5rem;
 }
+
+.sidebar-link {
+  color: #111827;
+  width: 100%;
+}
+
+.sidebar-link.active {
+  background: #dbeafe;
+  color: #1d4ed8;
+}

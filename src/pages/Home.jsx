@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import StatBox from '../components/StatBox';
 import { catalogItems, stats } from '../data/catalog';
 import './Home.css';
 
-function Home({ onNavigate }) {
+function Home() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredItems = selectedCategory === 'All'
@@ -20,8 +22,8 @@ function Home({ onNavigate }) {
           <h1>Build your dream shopping experience.</h1>
           <p>Welcome to a component-based frontend designed to showcase React fundamentals and reusability.</p>
           <div className="hero-actions">
-            <Button label="Explore Products" onClick={() => onNavigate('products')} />
-            <Button label="Learn More" variant="secondary" onClick={() => onNavigate('about')} />
+            <Button label="Explore Products" onClick={() => navigate('/products')} />
+            <Button label="Learn More" variant="secondary" onClick={() => navigate('/about')} />
           </div>
         </div>
       </div>
@@ -38,9 +40,13 @@ function Home({ onNavigate }) {
         ))}
       </div>
 
+      <div className="actions" style={{ marginBottom: '1rem' }}>
+        <Link to="/dashboard/overview">Open Dashboard</Link>
+      </div>
+
       <div className="cards-grid">
         {filteredItems.map((item) => (
-          <Card key={item.id} title={item.title} description={item.description} price={item.price} badge={item.badge} />
+          <Card key={item.id} id={item.id} title={item.title} description={item.description} price={item.price} badge={item.badge} />
         ))}
       </div>
     </section>

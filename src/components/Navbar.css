@@ -24,8 +24,12 @@
   cursor: pointer;
   padding: 0.4rem 0.7rem;
   border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-link.active, .sidebar-link.active {
   background: rgba(255,255,255,0.2);
+  font-weight: 700;
 }

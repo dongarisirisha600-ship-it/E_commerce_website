@@ -3,3 +3,40 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+}
+
+.loading-state {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.recent-box {
+  background: #f9fafb;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+}
+
+.recent-box ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1rem;
+}
+
+.detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.detail-image {
+  width: min(100%, 280px);
+  border-radius: 12px;
+  object-fit: cover;
+}
