@@ -6,7 +6,7 @@ const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 export const getProducts = async (req, res, next) => {
   try {
-    const { page = 1, limit = 10, search = '', category = '' } = req.query;
+    const { page = 1, limit = 10, search = '', category = '', sort = 'createdAt', order = 'desc' } = req.query;
     const query = {};
 
     if (search) {
@@ -21,14 +21,25 @@ export const getProducts = async (req, res, next) => {
       query.category = { $regex: category, $options: 'i' };
     }
 
+    const parsedPage = Math.max(1, Number(page) || 1);
+    const parsedLimit = Math.min(50, Math.max(1, Number(limit) || 10));
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortField = ['title', 'price', 'stock', 'category', 'createdAt'].includes(sort) ? sort : 'createdAt';
+
     const products = await Product.find(query)
-      .sort({ createdAt: -1 })
-      .limit(Number(limit))
-      .skip((Number(page) - 1) * Number(limit));
+      .sort({ [sortField]: sortOrder })
+      .limit(parsedLimit)
+      .skip((parsedPage - 1) * parsedLimit);
 
     const total = await Product.countDocuments(query);
 
-    res.json({ products, total, page: Number(page), limit: Number(limit) });
+    res.json({
+      products,
+      total,
+      page: parsedPage,
+      limit: parsedLimit,
+      totalPages: Math.max(1, Math.ceil(total / parsedLimit))
+    });
   } catch (error) {
     next(error);
   }

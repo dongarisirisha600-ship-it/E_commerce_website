@@ -7,6 +7,11 @@ import './Products.css';
 function Products() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit] = useState(6);
+  const [sortField, setSortField] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState('');
@@ -17,8 +22,9 @@ function Products() {
     setIsLoading(true);
     setError('');
     try {
-      const response = await getProducts({ search: searchTerm });
+      const response = await getProducts({ search: searchTerm, page, limit, sort: sortField, order: sortOrder });
       setProducts(response.data.products || []);
+      setTotalPages(response.data.totalPages || 1);
     } catch (err) {
       setError(err?.response?.data?.message || 'Unable to load products from the backend.');
     } finally {
@@ -28,15 +34,9 @@ function Products() {
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm]);
+  }, [searchTerm, page, sortField, sortOrder]);
 
-  const filteredProducts = useMemo(() => {
-    const query = searchTerm.toLowerCase();
-    return products.filter((product) => {
-      const values = [product.title, product.description, product.category];
-      return values.some((value) => value?.toLowerCase().includes(query));
-    });
-  }, [products, searchTerm]);
+  const filteredProducts = useMemo(() => products, [products]);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -62,19 +62,39 @@ function Products() {
         <Link to="/dashboard/overview">Open Dashboard</Link>
       </div>
 
-      <input
-        className="search-input"
-        value={searchTerm}
-        onChange={(event) => setSearchTerm(event.target.value)}
-        placeholder="Search by title, description, or category"
-      />
+      <div className="toolbar">
+        <input
+          className="search-input"
+          value={searchTerm}
+          onChange={(event) => {
+            setPage(1);
+            setSearchTerm(event.target.value);
+          }}
+          placeholder="Search by title, description, or category"
+        />
+        <select value={sortField} onChange={(event) => { setPage(1); setSortField(event.target.value); }}>
+          <option value="createdAt">Newest</option>
+          <option value="title">Name</option>
+          <option value="price">Price</option>
+          <option value="stock">Stock</option>
+          <option value="category">Category</option>
+        </select>
+        <select value={sortOrder} onChange={(event) => { setPage(1); setSortOrder(event.target.value); }}>
+          <option value="desc">Descending</option>
+          <option value="asc">Ascending</option>
+        </select>
+      </div>
 
       {successMessage && <div className="success-box">{successMessage}</div>}
       {isLoading && <div className="loading-state">Loading products...</div>}
       {error && <div className="error">{error}</div>}
 
       {!isLoading && !error && (
-        <div className="cards-grid">
+        <>
+          {filteredProducts.length === 0 ? (
+            <div className="empty-state">No products found for the current search or filters.</div>
+          ) : (
+            <div className="cards-grid">
           {filteredProducts.map((item) => (
             <Card
               key={item._id || item.id}
@@ -87,7 +107,14 @@ function Products() {
               isDeleting={isDeleting && deleteTarget === (item._id || item.id)}
             />
           ))}
-        </div>
+            </div>
+          )}
+          <div className="pagination">
+            <button disabled={page === 1 || isLoading} onClick={() => setPage((prev) => Math.max(1, prev - 1))}>Previous</button>
+            <span>Page {page} of {totalPages}</span>
+            <button disabled={page >= totalPages || isLoading} onClick={() => setPage((prev) => prev + 1)}>Next</button>
+          </div>
+        </>
       )}
 
       {deleteTarget && (
