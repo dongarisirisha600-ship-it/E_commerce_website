@@ -12,6 +12,7 @@ import DashboardOverview from './pages/DashboardOverview';
 import DashboardProfile from './pages/DashboardProfile';
 import DashboardSettings from './pages/DashboardSettings';
 import Details from './pages/Details';
+import EditProduct from './pages/EditProduct';
 import NotFound from './pages/NotFound';
 import { readStoredValue, writeStoredValue } from './utils/storage';
 import './App.css';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<Details />} />
+          <Route path="/products/edit/:id" element={<EditProduct />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />

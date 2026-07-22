@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
 
-function Card({ id, title, description, price, badge }) {
+function Card({ id, title, description, price, badge, onDelete, isDeleting }) {
   return (
     <article className="card">
       <span className="badge">{badge}</span>
@@ -9,7 +9,13 @@ function Card({ id, title, description, price, badge }) {
       <p>{description}</p>
       <div className="card-footer">
         <strong>${price}</strong>
-        <Link className="card-btn" to={`/products/${id}`}>View Details</Link>
+        <div className="card-actions">
+          <Link className="card-btn" to={`/products/${id}`}>View</Link>
+          <Link className="card-btn secondary" to={`/products/edit/${id}`}>Edit</Link>
+          <button className="card-btn danger" onClick={onDelete} disabled={isDeleting}>
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </button>
+        </div>
       </div>
     </article>
   );
