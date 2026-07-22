@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addToStoredList } from '../utils/storage';
+import { getProductById } from '../services/api';
 
 function Details() {
   const { id } = useParams();
@@ -17,19 +17,14 @@ function Details() {
       setError('');
 
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-        if (!response.ok) throw new Error('Product not found');
-        const data = await response.json();
+        const response = await getProductById(id);
         if (isMounted) {
-          setProduct(data);
-          addToStoredList('recentlyViewed', {
-            id: data.id,
-            title: data.title,
-            price: data.price
-          });
+          setProduct(response.data);
         }
       } catch (err) {
-        if (isMounted) setError('Something went wrong. Please try again later.');
+        if (isMounted) {
+          setError(err?.response?.data?.message || 'Unable to load product details.');
+        }
       } finally {
         if (isMounted) setIsLoading(false);
       }
@@ -62,9 +57,8 @@ function Details() {
       <p>{product.description}</p>
       <p><strong>Category:</strong> {product.category}</p>
       <p><strong>Price:</strong> ${product.price}</p>
-      <p><strong>Rating:</strong> {product.rating?.rate} / 5</p>
-      <p><strong>Status:</strong> In Stock</p>
-      {product.image && <img src={product.image} alt={product.title} className="detail-image" />}
+      <p><strong>Stock:</strong> {product.stock}</p>
+      <p><strong>Status:</strong> {product.status}</p>
       <div className="actions">
         <button onClick={() => navigate('/products')}>Back</button>
       </div>

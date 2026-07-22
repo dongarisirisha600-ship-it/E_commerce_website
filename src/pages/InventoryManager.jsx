@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { readStoredValue, writeStoredValue } from '../utils/storage';
+import { createProduct, deleteProduct, getProducts, updateProduct } from '../services/api';
 
 const defaultRecord = {
-  id: '',
-  name: '',
+  title: '',
+  description: '',
   category: '',
   price: '',
   stock: '',
@@ -11,24 +11,33 @@ const defaultRecord = {
 };
 
 function InventoryManager() {
-  const [records, setRecords] = useState(() => readStoredValue('inventoryRecords', []));
+  const [records, setRecords] = useState([]);
   const [formData, setFormData] = useState(defaultRecord);
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const loadProducts = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const response = await getProducts({ search: searchTerm });
+      setRecords(response.data.products || []);
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Unable to load inventory from the backend.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    writeStoredValue('inventoryRecords', records);
-    writeStoredValue('lastVisitedPage', '/dashboard/overview');
-  }, [records]);
+    loadProducts();
+  }, [searchTerm]);
 
-  const filteredRecords = useMemo(() => {
-    const query = searchTerm.toLowerCase();
-    return records.filter((record) => {
-      return [record.name, record.category, record.status].some((value) => value?.toLowerCase().includes(query));
-    });
-  }, [records, searchTerm]);
+  const filteredRecords = useMemo(() => records, [records]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -40,36 +49,49 @@ function InventoryManager() {
     setEditingId(null);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!formData.name.trim() || !formData.category.trim() || !formData.price || !formData.stock) {
+    if (!formData.title.trim() || !formData.description.trim() || !formData.category.trim() || !formData.price || !formData.stock) {
       setMessage('Please fill in all required fields.');
       return;
     }
 
-    if (editingId) {
-      setRecords((prev) => prev.map((record) => record.id === editingId ? { ...record, ...formData, price: Number(formData.price), stock: Number(formData.stock) } : record));
-      setMessage('Record updated successfully.');
-    } else {
-      const newRecord = {
-        id: Date.now().toString(),
-        ...formData,
-        price: Number(formData.price),
-        stock: Number(formData.stock)
-      };
-      setRecords((prev) => [newRecord, ...prev]);
-      setMessage('Record added successfully.');
-    }
+    try {
+      if (editingId) {
+        await updateProduct(editingId, {
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          price: Number(formData.price),
+          stock: Number(formData.stock),
+          status: formData.status
+        });
+        setMessage('Record updated successfully.');
+      } else {
+        await createProduct({
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          price: Number(formData.price),
+          stock: Number(formData.stock),
+          status: formData.status
+        });
+        setMessage('Record added successfully.');
+      }
 
-    resetForm();
+      resetForm();
+      await loadProducts();
+    } catch (err) {
+      setMessage(err?.response?.data?.message || 'Unable to save the record.');
+    }
   };
 
   const handleEdit = (record) => {
-    setEditingId(record.id);
+    setEditingId(record._id || record.id);
     setFormData({
-      id: record.id,
-      name: record.name,
+      title: record.title,
+      description: record.description,
       category: record.category,
       price: record.price,
       stock: record.stock,
@@ -78,22 +100,27 @@ function InventoryManager() {
     setMessage('');
   };
 
-  const handleDelete = () => {
-    setRecords((prev) => prev.filter((record) => record.id !== deleteTarget));
-    setDeleteTarget(null);
-    setMessage('Record deleted successfully.');
+  const handleDelete = async () => {
+    try {
+      await deleteProduct(deleteTarget);
+      setDeleteTarget(null);
+      setMessage('Record deleted successfully.');
+      await loadProducts();
+    } catch (err) {
+      setMessage(err?.response?.data?.message || 'Unable to delete the record.');
+    }
   };
 
   return (
     <section className="inventory-manager">
       <h3>Inventory Manager</h3>
-      <p>Manage products locally with full CRUD support and persistence.</p>
+      <p>Manage products through the Express + MongoDB backend.</p>
 
       <form className="register-form" onSubmit={handleSubmit}>
         <div className="form-grid">
           <label>
             Product Name
-            <input name="name" value={formData.name} onChange={handleChange} />
+            <input name="title" value={formData.title} onChange={handleChange} />
           </label>
           <label>
             Category
@@ -106,6 +133,10 @@ function InventoryManager() {
           <label>
             Stock
             <input name="stock" type="number" value={formData.stock} onChange={handleChange} />
+          </label>
+          <label>
+            Description
+            <input name="description" value={formData.description} onChange={handleChange} />
           </label>
           <label>
             Status
@@ -123,6 +154,7 @@ function InventoryManager() {
       </form>
 
       {message && <div className="success-box">{message}</div>}
+      {error && <div className="error">{error}</div>}
 
       <input
         className="search-input"
@@ -131,25 +163,31 @@ function InventoryManager() {
         placeholder="Search by name, category, or status"
       />
 
-      <div className="records-table">
-        {filteredRecords.map((record) => (
-          <article key={record.id} className="record-card">
-            <div>
-              <strong>{record.name}</strong>
-              <p>{record.category}</p>
-            </div>
-            <div>
-              <p>Price: ${record.price}</p>
-              <p>Stock: {record.stock}</p>
-              <p>Status: {record.status}</p>
-            </div>
-            <div className="actions">
-              <button onClick={() => handleEdit(record)}>Edit</button>
-              <button className="secondary" onClick={() => setDeleteTarget(record.id)}>Delete</button>
-            </div>
-          </article>
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="loading-state">Loading inventory...</div>
+      ) : filteredRecords.length === 0 ? (
+        <p>No products found.</p>
+      ) : (
+        <div className="records-table">
+          {filteredRecords.map((record) => (
+            <article key={record._id || record.id} className="record-card">
+              <div>
+                <strong>{record.title}</strong>
+                <p>{record.category}</p>
+              </div>
+              <div>
+                <p>Price: ${record.price}</p>
+                <p>Stock: {record.stock}</p>
+                <p>Status: {record.status}</p>
+              </div>
+              <div className="actions">
+                <button onClick={() => handleEdit(record)}>Edit</button>
+                <button className="secondary" onClick={() => setDeleteTarget(record._id || record.id)}>Delete</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
 
       {deleteTarget && (
         <div className="modal">
