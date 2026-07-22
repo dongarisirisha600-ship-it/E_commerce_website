@@ -61,6 +61,67 @@ body {
   font-size: 0.95rem;
 }
 
+.success-box {
+  background: #ecfdf3;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+}
+
+.records-table {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.record-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  min-width: min(320px, 100%);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #111827;
+  --panel: #1f2937;
+  --text: #f3f4f6;
+}
+
+:root[data-theme='dark'] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .content-area,
+:root[data-theme='dark'] .record-card,
+:root[data-theme='dark'] .modal-box {
+  background: var(--panel);
+  color: var(--text);
+}
+
 @media (max-width: 768px) {
   .layout {
     flex-direction: column;

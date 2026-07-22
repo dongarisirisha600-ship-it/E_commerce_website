@@ -38,6 +38,8 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+    writeStoredValue('authUser', null);
+    writeStoredValue('lastVisitedPage', '/');
   };
 
   return (

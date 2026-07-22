@@ -24,3 +24,23 @@ export function addToStoredList(key, value, limit = 5) {
   writeStoredValue(key, nextEntries);
   return nextEntries;
 }
+
+export function readSessionValue(key, fallback) {
+  const storage = typeof window !== 'undefined' ? window.sessionStorage : globalThis.sessionStorage;
+  if (!storage) return fallback;
+
+  const stored = storage.getItem(key);
+  if (!stored) return fallback;
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return fallback;
+  }
+}
+
+export function writeSessionValue(key, value) {
+  const storage = typeof window !== 'undefined' ? window.sessionStorage : globalThis.sessionStorage;
+  if (!storage) return;
+  storage.setItem(key, JSON.stringify(value));
+}

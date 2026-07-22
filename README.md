@@ -129,23 +129,44 @@ E_commerce_website/
 
 ## How to Run
 
+### Frontend
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/dongarisirisha600-ship-it/E_commerce_website.git
    cd E_commerce_website
    ```
 
-2. Install dependencies:
+2. Install frontend dependencies:
    ```bash
    npm install
    ```
 
-3. Run the development server:
+3. Run the frontend development server:
    ```bash
    npm run dev
    ```
 
 4. Open the app at `http://localhost:5173`
+
+### Backend
+
+1. Move into the backend folder:
+   ```bash
+   cd backend
+   ```
+
+2. Install backend dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the Express server:
+   ```bash
+   npm start
+   ```
+
+4. Test the API at `http://localhost:5000`
 
 ## Build for Production
 

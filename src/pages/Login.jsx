@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { writeStoredValue } from '../utils/storage';
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -16,7 +17,9 @@ function Login({ onLogin }) {
     event.preventDefault();
 
     if (formData.email === 'admin@example.com' && formData.password === 'Admin@123!') {
-      onLogin({ name: 'Admin User', email: formData.email });
+      const userData = { name: 'Admin User', email: formData.email };
+      writeStoredValue('authUser', userData);
+      onLogin(userData);
       const redirectTo = location.state?.from?.pathname || '/dashboard';
       navigate(redirectTo, { replace: true });
     } else {

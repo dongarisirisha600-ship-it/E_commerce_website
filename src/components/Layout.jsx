@@ -38,6 +38,10 @@ function Layout({ user, onLogout }) {
     document.title = `MegaMart | ${pageName}`;
   }, [location.pathname]);
 
+  useEffect(() => {
+    writeStoredValue('lastVisitedPage', location.pathname);
+  }, [location.pathname]);
+
   return (
     <div className="app-shell">
       <Navbar brand="MegaMart" links={mainLinks} user={user} onLogout={onLogout} />
