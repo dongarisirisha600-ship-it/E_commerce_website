@@ -1,6 +1,62 @@
 # MegaMart
 
-MegaMart is a simple React + Vite frontend project created to demonstrate core React concepts such as components, props, reusable UI, JSX, and component-based architecture.
+MegaMart is a React + Vite frontend project paired with an Express + MongoDB backend for product management and e-commerce API workflows.
+
+## Backend Features Implemented
+
+- MongoDB Atlas connection setup through a secure .env configuration
+- Mongoose schema and model for products with validation rules
+- Database-driven CRUD APIs for products
+- ObjectId validation for fetch, update, and delete requests
+- Validation errors and meaningful API responses
+- Search, category filtering, and pagination support for product listing
+- Request logging and centralized error handling middleware
+
+## API Endpoints
+
+- GET /api/products - fetch all products with pagination and search support
+- GET /api/products/:id - fetch a single product by ObjectId
+- POST /api/products - create a new product
+- PUT /api/products/:id - update an existing product
+- DELETE /api/products/:id - delete a product
+
+## Product Schema Rules
+
+- Title: required, trimmed, minimum length 3, unique
+- Description: required, trimmed, minimum length 10
+- Price: required, numeric, cannot be negative
+- Category: required, enum-based
+- Stock: numeric, non-negative
+- Status: enum-based with default value
+
+## Backend Setup
+
+1. Move into the backend folder:
+   ```bash
+   cd backend
+   ```
+
+2. Create a .env file with your Atlas connection string:
+   ```env
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/megamart?retryWrites=true&w=majority
+   PORT=5000
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the server:
+   ```bash
+   npm start
+   ```
+
+## Notes
+
+- The backend validates incoming data and returns clear messages for missing fields or invalid values.
+- Invalid ObjectIds now return a 400 response.
+- Missing records return a 404 response.
 
 ## Features Implemented
 

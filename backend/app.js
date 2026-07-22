@@ -8,8 +8,6 @@ dotenv.config();
 
 const app = express();
 
-connectDB();
-
 app.use(express.json());
 app.use(requestLogger);
 
@@ -18,7 +16,12 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/products', productRoutes);
-
 app.use(errorHandler);
 
+const initializeApp = async () => {
+  await connectDB();
+  return app;
+};
+
+export { initializeApp };
 export default app;

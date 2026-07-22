@@ -1,21 +1,66 @@
 import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import Product from '../models/Product.js';
+
+let mongoServer;
+
+const seedProducts = async () => {
+  const count = await Product.countDocuments();
+  if (count === 0) {
+    await Product.insertMany([
+      {
+        title: 'Smart Headphones',
+        description: 'Immersive audio with active noise cancellation.',
+        price: 129,
+        category: 'Electronics',
+        stock: 15,
+        status: 'In Stock'
+      },
+      {
+        title: 'Ergo Chair',
+        description: 'Comfortable ergonomic seating for long work sessions.',
+        price: 189,
+        category: 'Furniture',
+        stock: 8,
+        status: 'Low Stock'
+      },
+      {
+        title: 'Wireless Mouse',
+        description: 'Reliable wireless mouse with a long battery life.',
+        price: 49,
+        category: 'Accessories',
+        stock: 20,
+        status: 'In Stock'
+      }
+    ]);
+  }
+};
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+
   try {
     const mongoUri = process.env.MONGO_URI && !process.env.MONGO_URI.includes('<')
       ? process.env.MONGO_URI
       : undefined;
 
-    if (!mongoUri) {
-      console.warn('No MongoDB URI provided. Using the local fallback data store for development.');
-      return;
+    let uri = mongoUri;
+
+    if (!uri) {
+      mongoServer = await MongoMemoryServer.create();
+      uri = mongoServer.getUri();
+      console.log('Using an in-memory MongoDB server for local development.');
     }
 
-    const conn = await mongoose.connect(mongoUri);
-    console.log(`MongoDB connected: ${conn.connection.host}`);
+    const conn = await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+    console.log(`MongoDB connected successfully to ${conn.connection.host}/${conn.connection.name}`);
+    await seedProducts();
   } catch (error) {
-    console.warn('MongoDB connection failed, using local fallback data store for development.');
-    console.warn(error.message);
+    console.error('MongoDB connection failed.');
+    console.error(error.message);
+    console.warn('Please verify your Atlas connection string, username, password, network access, and IP whitelist.');
   }
 };
 
