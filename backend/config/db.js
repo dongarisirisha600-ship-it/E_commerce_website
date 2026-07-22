@@ -14,6 +14,7 @@ const seedProducts = async () => {
         price: 129,
         category: 'Electronics',
         stock: 15,
+        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
         status: 'In Stock'
       },
       {
@@ -22,6 +23,7 @@ const seedProducts = async () => {
         price: 189,
         category: 'Furniture',
         stock: 8,
+        image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
         status: 'Low Stock'
       },
       {
@@ -30,6 +32,7 @@ const seedProducts = async () => {
         price: 49,
         category: 'Accessories',
         stock: 20,
+        image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
         status: 'In Stock'
       }
     ]);

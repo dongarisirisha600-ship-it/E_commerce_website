@@ -32,6 +32,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Stock cannot be negative']
     },
+    image: {
+      type: String,
+      default: 'https://placehold.co/600x400/2563eb/ffffff?text=MegaMart'
+    },
     status: {
       type: String,
       enum: ['In Stock', 'Low Stock', 'Out of Stock'],

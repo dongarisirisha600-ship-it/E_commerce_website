@@ -46,7 +46,7 @@ function Home() {
 
       <div className="cards-grid">
         {filteredItems.map((item) => (
-          <Card key={item.id} id={item.id} title={item.title} description={item.description} price={item.price} badge={item.badge} />
+          <Card key={item.id} id={item.id} title={item.title} description={item.description} price={item.price} badge={item.badge} image={item.image} />
         ))}
       </div>
     </section>

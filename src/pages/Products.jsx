@@ -103,6 +103,7 @@ function Products() {
               description={item.description}
               price={item.price}
               badge={item.category}
+              image={item.image}
               onDelete={() => setDeleteTarget(item._id || item.id)}
               isDeleting={isDeleting && deleteTarget === (item._id || item.id)}
             />

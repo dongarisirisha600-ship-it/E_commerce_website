@@ -53,6 +53,7 @@ function Details() {
 
   return (
     <section className="detail-card">
+      {product.image ? <img src={product.image} alt={product.title} className="detail-image" /> : null}
       <h2>{product.title}</h2>
       <p>{product.description}</p>
       <p><strong>Category:</strong> {product.category}</p>

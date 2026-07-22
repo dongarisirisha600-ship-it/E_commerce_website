@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import './Card.css';
 
-function Card({ id, title, description, price, badge, onDelete, isDeleting }) {
+function Card({ id, title, description, price, badge, image, onDelete, isDeleting }) {
   return (
     <article className="card">
+      <img
+        className="card-image"
+        src={image || 'https://placehold.co/600x400/2563eb/ffffff?text=MegaMart'}
+        alt={title}
+      />
       <span className="badge">{badge}</span>
       <h3>{title}</h3>
       <p>{description}</p>
