@@ -176,7 +176,7 @@ function InventoryManager() {
                 <p>{record.category}</p>
               </div>
               <div>
-                <p>Price: ${record.price}</p>
+                <p>Price: ₹{record.price.toFixed ? record.price.toFixed(2) : record.price}</p>
                 <p>Stock: {record.stock}</p>
                 <p>Status: {record.status}</p>
               </div>

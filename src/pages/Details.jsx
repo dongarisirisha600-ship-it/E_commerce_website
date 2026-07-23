@@ -57,7 +57,7 @@ function Details() {
       <h2>{product.title}</h2>
       <p>{product.description}</p>
       <p><strong>Category:</strong> {product.category}</p>
-      <p><strong>Price:</strong> ${product.price}</p>
+      <p><strong>Price:</strong> ₹{product.price.toFixed(2)}</p>
       <p><strong>Stock:</strong> {product.stock}</p>
       <p><strong>Status:</strong> {product.status}</p>
       <div className="actions">

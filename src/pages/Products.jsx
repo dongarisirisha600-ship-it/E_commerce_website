@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import Card from '../components/Card';
 import { deleteProduct, getProducts } from '../services/api';
 import './Products.css';
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState(() => searchParams.get('search') || '');
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || '');
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [limit] = useState(6);
   const [sortField, setSortField] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
@@ -17,24 +19,50 @@ function Products() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(false);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     setError('');
     try {
       const response = await getProducts({ search: searchTerm, page, limit, sort: sortField, order: sortOrder });
-      setProducts(response.data.products || []);
-      setTotalPages(response.data.totalPages || 1);
+      const nextProducts = response.data.products || [];
+      const nextTotalPages = response.data.totalPages || 1;
+
+      if (page > nextTotalPages && nextTotalPages > 0) {
+        setPage(nextTotalPages);
+        return;
+      }
+
+      setProducts(nextProducts);
+      setTotalPages(nextTotalPages);
     } catch (err) {
       setError(err?.response?.data?.message || 'Unable to load products from the backend.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [searchTerm, page, limit, sortField, sortOrder]);
+
+  useEffect(() => {
+    const query = searchParams.get('search') || '';
+    setSearchInput(query);
+    setSearchTerm(query);
+    setPage(Number(searchParams.get('page')) || 1);
+  }, [searchParams]);
 
   useEffect(() => {
     fetchProducts();
-  }, [searchTerm, page, sortField, sortOrder]);
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+
+    const intervalId = setInterval(() => {
+      fetchProducts();
+    }, 15000);
+
+    return () => clearInterval(intervalId);
+  }, [autoRefresh, fetchProducts]);
 
   const filteredProducts = useMemo(() => products, [products]);
 
@@ -63,15 +91,23 @@ function Products() {
       </div>
 
       <div className="toolbar">
-        <input
-          className="search-input"
-          value={searchTerm}
-          onChange={(event) => {
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
             setPage(1);
-            setSearchTerm(event.target.value);
+            setSearchTerm(searchInput);
+            setSearchParams({ search: searchInput, page: '1' }, { replace: true });
           }}
-          placeholder="Search by title, description, or category"
-        />
+          style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}
+        >
+          <input
+            className="search-input"
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
+            placeholder="Search products by title, category, or description"
+          />
+          <button type="submit">Search</button>
+        </form>
         <select value={sortField} onChange={(event) => { setPage(1); setSortField(event.target.value); }}>
           <option value="createdAt">Newest</option>
           <option value="title">Name</option>
@@ -83,7 +119,12 @@ function Products() {
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
         </select>
+        <label className="live-refresh-toggle">
+          <input type="checkbox" checked={autoRefresh} onChange={(event) => setAutoRefresh(event.target.checked)} />
+          Live inventory refresh
+        </label>
       </div>
+      {autoRefresh && <div className="info-banner">Background refresh is enabled. Products update every 15 seconds.</div>}
 
       {successMessage && <div className="success-box">{successMessage}</div>}
       {isLoading && <div className="loading-state">Loading products...</div>}

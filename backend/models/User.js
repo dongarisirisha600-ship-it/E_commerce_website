@@ -80,6 +80,8 @@ userSchema.methods.comparePassword = async function comparePassword(candidatePas
   return bcrypt.compare(candidatePassword, this.password);
 };
 
+userSchema.index({ role: 1 });
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

@@ -13,7 +13,7 @@ function Card({ id, title, description, price, badge, image, onDelete, isDeletin
       <h3>{title}</h3>
       <p>{description}</p>
       <div className="card-footer">
-        <strong>${price}</strong>
+        <strong>₹{price.toFixed ? price.toFixed(2) : price}</strong>
         <div className="card-actions">
           <Link className="card-btn" to={`/products/${id}`}>View</Link>
           <Link className="card-btn secondary" to={`/products/edit/${id}`}>Edit</Link>

@@ -15,6 +15,20 @@
 .nav-links {
   display: flex;
   gap: 0.75rem;
+  align-items: center;
+}
+
+.search-form {
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-form .search-input {
+  min-width: 180px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
 }
 
 .nav-link, .sidebar-link {

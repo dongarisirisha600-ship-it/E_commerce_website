@@ -10,6 +10,11 @@ const pageTitles = {
   '/products': 'Products',
   '/about': 'About',
   '/contact': 'Contact',
+  '/clothing': 'Clothing',
+  '/fashion': 'Fashion',
+  '/material': 'Material',
+  '/style-guide': 'Style Guide',
+  '/wardrobe': 'Wardrobe',
   '/register': 'Register',
   '/login': 'Login',
   '/dashboard': 'Dashboard'
@@ -20,7 +25,8 @@ function Layout({ user, onLogout }) {
   const mainLinks = [
     { label: 'Home', to: '/' },
     { label: 'Products', to: '/products' },
-    { label: 'About', to: '/about' },
+    { label: 'Clothing', to: '/clothing' },
+    { label: 'Fashion', to: '/fashion' },
     { label: 'Contact', to: '/contact' },
     { label: 'Register', to: '/register' }
   ];
@@ -28,9 +34,9 @@ function Layout({ user, onLogout }) {
   const sidebarLinks = [
     { label: 'Home', to: '/' },
     { label: 'Products', to: '/products' },
-    { label: 'About', to: '/about' },
-    { label: 'Contact', to: '/contact' },
-    { label: 'Register', to: '/register' }
+    { label: 'Material', to: '/material' },
+    { label: 'Style Guide', to: '/style-guide' },
+    { label: 'Wardrobe', to: '/wardrobe' }
   ];
 
   useEffect(() => {

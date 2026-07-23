@@ -5,6 +5,11 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Clothing from './pages/Clothing';
+import Fashion from './pages/Fashion';
+import Material from './pages/Material';
+import StyleGuide from './pages/StyleGuide';
+import Wardrobe from './pages/Wardrobe';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -53,6 +58,11 @@ function App() {
           <Route path="/products/edit/:id" element={<EditProduct />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/clothing" element={<Clothing />} />
+          <Route path="/fashion" element={<Fashion />} />
+          <Route path="/material" element={<Material />} />
+          <Route path="/style-guide" element={<StyleGuide />} />
+          <Route path="/wardrobe" element={<Wardrobe />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route

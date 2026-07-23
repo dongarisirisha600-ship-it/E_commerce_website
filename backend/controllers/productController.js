@@ -10,11 +10,7 @@ export const getProducts = async (req, res, next) => {
     const query = {};
 
     if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } }
-      ];
+      query.$text = { $search: search };
     }
 
     if (category) {

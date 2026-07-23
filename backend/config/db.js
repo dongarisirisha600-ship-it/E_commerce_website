@@ -34,6 +34,33 @@ const seedProducts = async () => {
         stock: 20,
         image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80',
         status: 'In Stock'
+      },
+      {
+        title: 'Cotton Summer Kurta',
+        description: 'Lightweight cotton kurta with vibrant prints for everyday wear.',
+        price: 699,
+        category: 'Clothing',
+        stock: 25,
+        image: 'https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80',
+        status: 'In Stock'
+      },
+      {
+        title: 'Silk Saree',
+        description: 'Traditional silk saree in rich colors for festivals and special occasions.',
+        price: 2499,
+        category: 'Clothing',
+        stock: 10,
+        image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
+        status: 'Low Stock'
+      },
+      {
+        title: 'Denim Jacket',
+        description: 'Casual denim jacket with soft lining and a modern fit.',
+        price: 1199,
+        category: 'Clothing',
+        stock: 12,
+        image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
+        status: 'In Stock'
       }
     ]);
   }
