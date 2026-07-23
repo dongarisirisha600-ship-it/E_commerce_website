@@ -198,6 +198,41 @@ E_commerce_website/
 
 ## How to Run
 
+1. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+2. Install backend dependencies:
+   ```bash
+   npm install --prefix backend
+   ```
+3. Start the frontend in development mode:
+   ```bash
+   npm run dev
+   ```
+4. Start the backend in development mode:
+   ```bash
+   npm run dev --prefix backend
+   ```
+
+## Production Deployment
+
+1. Set your MongoDB connection details in `backend/.env` or on your hosting provider:
+   ```env
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/megamart?retryWrites=true&w=majority
+   PORT=5000
+   ```
+2. Build the frontend:
+   ```bash
+   npm run build
+   ```
+3. Start the server:
+   ```bash
+   npm start
+   ```
+
+The backend is configured to serve the Vite production build from `dist` when `NODE_ENV=production`. This combined setup works well on Node hosting services such as Heroku, Render, Railway, or any container-based platform.
+
 ### Frontend
 
 1. Clone the repository:

@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "start": "node backend/server.js",
+    "postinstall": "npm install --prefix backend",
     "test": "node --test src/services/api.test.js"
   },
   "dependencies": {
