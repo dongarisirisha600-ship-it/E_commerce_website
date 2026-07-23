@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import api from '../services/api';
 import './Register.css';
 
 const initialFormData = {
@@ -14,6 +15,7 @@ const initialFormData = {
   state: '',
   pincode: '',
   preferredCategory: '',
+  role: 'customer',
   acceptedTerms: false
 };
 
@@ -59,7 +61,7 @@ function Register() {
     return nextErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const nextErrors = validateForm();
     setErrors(nextErrors);
@@ -70,9 +72,26 @@ function Register() {
       return;
     }
 
-    setSubmitted(true);
-    setMessage('Customer registration successful. Your account is ready for shopping.');
-    setFormData(initialFormData);
+    try {
+      const payload = {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        mobile: formData.mobile,
+        gender: formData.gender,
+        dob: formData.dob,
+        role: formData.role,
+        acceptedTerms: formData.acceptedTerms
+      };
+
+      await api.post('/auth/register', payload);
+      setSubmitted(true);
+      setMessage('Registration successful. Your account is ready for shopping.');
+      setFormData(initialFormData);
+    } catch (err) {
+      setSubmitted(false);
+      setMessage(err?.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   const handleReset = () => {
@@ -170,6 +189,14 @@ function Register() {
               <option value="Accessories">Accessories</option>
             </select>
             {errors.preferredCategory && <span className="error">{errors.preferredCategory}</span>}
+          </label>
+
+          <label>
+            Role
+            <select name="role" value={formData.role} onChange={handleChange}>
+              <option value="customer">Customer</option>
+              <option value="admin">Admin</option>
+            </select>
           </label>
         </div>
 

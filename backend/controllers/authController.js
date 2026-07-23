@@ -15,12 +15,13 @@ const buildUserResponse = (user) => ({
   skills: user.skills,
   gender: user.gender,
   dob: user.dob,
+  role: user.role,
   acceptedTerms: user.acceptedTerms
 });
 
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password, mobile, collegeName, branch, graduationYear, skills, gender, dob, acceptedTerms } = req.body;
+    const { name, email, password, mobile, collegeName, branch, graduationYear, skills, gender, dob, acceptedTerms, role } = req.body;
 
     if (!name || !email || !password) {
       return sendError(res, 'Name, email, and password are required.', 400);
@@ -44,6 +45,7 @@ export const registerUser = async (req, res, next) => {
       skills,
       gender,
       dob,
+      role: role && ['customer', 'admin'].includes(role) ? role : 'customer',
       acceptedTerms: Boolean(acceptedTerms),
       profileImage
     });

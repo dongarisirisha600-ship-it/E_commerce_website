@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { readStoredValue, writeStoredValue } from '../utils/storage';
 import InventoryManager from './InventoryManager';
 
-function DashboardOverview() {
+function DashboardOverview({ user }) {
   const [theme, setTheme] = useState(() => readStoredValue('theme', 'light'));
   const [sessionNote, setSessionNote] = useState('');
 
@@ -27,7 +27,13 @@ function DashboardOverview() {
         </button>
       </div>
       <p className="success-box">{sessionNote}</p>
-      <InventoryManager />
+      {user?.role === 'admin' ? (
+        <InventoryManager />
+      ) : (
+        <div className="success-box">
+          Inventory management is available for admin users only.
+        </div>
+      )}
     </section>
   );
 }

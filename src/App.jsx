@@ -63,7 +63,7 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="overview" element={<DashboardOverview />} />
+            <Route path="overview" element={<DashboardOverview user={user} />} />
             <Route path="profile" element={<DashboardProfile />} />
             <Route path="settings" element={<DashboardSettings />} />
           </Route>
